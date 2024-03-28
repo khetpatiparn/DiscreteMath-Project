@@ -1,65 +1,110 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
-import javax.xml.transform.Source;
 
 public class Dijkstra {
     public int nVer;
     public int[][] graph;
     public int source;
 
-    // Function that implements Dijkstra's single source shortest path
-    // algorithm for a graph represented using adjacency matrix
-    // representation
+    public Dijkstra(int V, int graph[][], int src) {
+        this.nVer = V;
+        this.graph = graph;
+        this.source = src;
+    }
 
-    // public Dijkstra(int V, int graph[][], int src){
-    //     this.nVer = V;
-    //     this.graph = graph;
-    //     this.source = src;
-    // }
+    public void dijkstra() {
+        List<List<Edge>> adjacencyList = new ArrayList<>();
 
-    public void dijkstra(int[][] graph, int sourceVertex){
-        //List<Edge> djks = new ArrayList<>();
-        int vertexCount = graph.length;
-        boolean[] visitedVertex = new boolean[vertexCount];
-        int[] distance = new int[vertexCount];
-        for (int i = 0; i < vertexCount; i++){
-            visitedVertex[i] = false;
-            distance[i] = Integer.MAX_VALUE;
+        // Initialize adjacency list
+        for (int i = 0; i < nVer; i++) {
+            List<Edge> edges = new ArrayList<>();
+            adjacencyList.add(edges);
         }
-        distance[sourceVertex] = 0; // distance of source vertex to itself is zero
-        for (int i = 0; i < vertexCount; i++){
-            //find the neighbouring unvisited vertex having  minimum distance from source vertex
-            //for the first time u will be the source vertex and the distance array will be updated with the neighbouring vertex distance of source vertex
-            int u = findMinDistance(distance, visitedVertex);
-            //u is the row and v is the column
-            visitedVertex[u] = true;
-            //now update all the neighbour vertex distances
-            for (int v =0 ; v < vertexCount; v++){
-            //graph[u][v] != 0 -> there should be a direct edge
-                if(!visitedVertex[v] && graph[u][v] != 0 && (distance[u] + graph[u][v] < distance[v])){
-                    distance[v] = distance[u] + graph[u][v];
+
+        // Convert graph matrix to adjacency list
+        for (int i = 0; i < nVer; i++) {
+            for (int j = 0; j < nVer; j++) {
+                if (graph[i][j] != 0) {
+                    Edge edge = new Edge(i, j, graph[i][j]);
+                    adjacencyList.get(i).add(edge);
                 }
             }
         }
-        for (int i = 0; i < distance.length; i++){
-            System.out.println(String.format("Distance from source vertex %s to vertex %s is %s", sourceVertex, i, distance[i]));
+
+        boolean[] visited = new boolean[nVer];
+        int[] distance = new int[nVer];
+        List<List<Integer>> paths = new ArrayList<>();
+
+        // Initialize distances and paths
+        for (int i = 0; i < nVer; i++) {
+            visited[i] = false;
+            distance[i] = Integer.MAX_VALUE;
+            paths.add(new ArrayList<>());
         }
 
-    }
+        // Distance from source to itself is 0
+        distance[source] = 0;
+        paths.get(source).add(source);
 
-    private static int findMinDistance(int[] distance, boolean[] visitedVertex) {
-        int minDistance = Integer.MAX_VALUE;
-        int minDistanceVertex = -1;
-        for (int i =0; i < distance.length; i++){
-            //the vertex should not be visited and the distance should be the minimum.
-            //this is similar to finding the min element of an array
-            if(!visitedVertex[i] && distance[i] < minDistance){
-                minDistance = distance[i];
-                minDistanceVertex = i;
+        // Dijkstra's algorithm
+        for (int count = 0; count < nVer - 1; count++) {
+            int u = minDistance(distance, visited);
+            visited[u] = true;
+
+            for (Edge edge : adjacencyList.get(u)) {
+                int v = edge.getDst();
+                if (!visited[v] && distance[u] != Integer.MAX_VALUE && distance[u] + edge.getWeight() < distance[v]) {
+                    distance[v] = distance[u] + edge.getWeight();
+                    paths.get(v).clear();
+                    paths.get(v).addAll(paths.get(u));
+                    paths.get(v).add(v);
+                }
             }
         }
-        return minDistanceVertex;
+
+        // Print all paths
+        for (int i = 0; i < nVer; i++) {
+            if (i != source) {
+                System.out.print("Path from v" + source + " to v" + i + ": ");
+                for (int node : paths.get(i)) {
+                    System.out.print("v"+node + " ");
+                }
+                System.out.println(", Distance: " + distance[i]);
+            }
+        }
     }
 
+    private int minDistance(int[] distance, boolean[] visited) {
+        int min = Integer.MAX_VALUE;
+        int minIndex = -1;
+
+        for (int v = 0; v < nVer; v++) {
+            if (!visited[v] && distance[v] <= min) {
+                min = distance[v];
+                minIndex = v;
+            }
+        }
+        return minIndex;
+    }
+
+    public static void main(String[] args) {
+        int V = 9;
+        int[][] graph = {
+            {0, 4, 0, 0, 0, 0, 0, 8, 0},
+            {4, 0, 8, 0, 0, 0, 0, 11, 0},
+            {0, 8, 0, 7, 0, 4, 0, 0, 2},
+            {0, 0, 7, 0, 9, 14, 0, 0, 0},
+            {0, 0, 0, 9, 0, 10, 0, 0, 0},
+            {0, 0, 4, 14, 10, 0, 2, 0, 0},
+            {0, 0, 0, 0, 0, 2, 0, 1, 6},
+            {8, 11, 0, 0, 0, 0, 1, 0, 7},
+            {0, 0, 2, 0, 0, 0, 6, 7, 0}
+        };
+
+        int source = 0;
+
+        Dijkstra dijkstra = new Dijkstra(V, graph, source);
+        dijkstra.dijkstra();
+    }
 }
