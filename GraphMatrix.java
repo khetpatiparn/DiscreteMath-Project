@@ -1,13 +1,28 @@
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraphMatrix{
     // build adjacency matrix
-    static List<String> vertices = new ArrayList<>();
-    static List<Edge> edges = new ArrayList<>();
+    private List<String> vertices = new ArrayList<>();
+    private List<Edge> edges = new ArrayList<>();
     int[][] matrix;
+    
+    public List<String> getVertices() {
+        return vertices;
+    }
+    public void setVertices(List<String> vertices) {
+        this.vertices = vertices;
+    }
+    public List<Edge> getEdges() {
+        return edges;
+    }
+    public void setEdges(List<Edge> edges) {
+        this.edges = edges;
+    }
+
     int[][] showWeight;
+
+    
 
     public GraphMatrix(int countV, int countE){
         matrix = new int[countV][countV]; // build size matrix
@@ -116,33 +131,5 @@ public class GraphMatrix{
             System.out.println();
         }
         System.out.println();
-    }
-
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-        int countV = 5;
-
-        //int countE = 3;
-        GraphMatrix myG = new GraphMatrix(countV);
-
-        // Add Edges endpoint and Weight
-        // while (!myG.isConnected()) {
-        //     String name = sc.next();
-        //     int source = sc.nextInt();
-        //     int dest = sc.nextInt();
-        //     int w = sc.nextInt();
-        //     myG.addEdges(new Edge(name,source, dest,w));
-        // } 
-        
-        //myG.addEdges("e0", 0 ,1 , 7);
-        myG.addEdges("e0", 1 ,2 , 7);
-        myG.addEdges("e1", 2 ,3 , 10);
-        myG.addEdges("e2", 3 ,4 , 8);
-        myG.addEdges("e3", 4 ,0 , 2);
-        // myG.addEdges("e3", 4 ,1 , 2);
-
-        // myG.checkDeg();
-        myG.isConnected();
     }
 }

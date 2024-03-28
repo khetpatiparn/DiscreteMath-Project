@@ -2,7 +2,17 @@ public class Edge {
     private String name;
     private int src, dst;
     private int w;
-
+    
+    public Edge(int src, int dst, int w){
+        this.src = src;
+        this.dst = dst;
+        this.w = w;
+    }
+    public Edge(int src, int dst){
+        this.src = src;
+        this.dst = dst;
+    }
+    
     public Edge(String name, int src, int dst, int w){
         this.name = name;
         this.src = src;
@@ -40,6 +50,10 @@ public class Edge {
 
     public void setW(int w) {
         this.w = w;
+    }
+    @Override
+    public String toString() {
+        return "Edge [name=" + name + ", src=" + src + ", dst=" + dst + ", w=" + w + "]";
     }
 
 }
