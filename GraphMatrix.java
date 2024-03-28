@@ -1,19 +1,24 @@
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraphMatrix{
     // build adjacency matrix
-    List<String> vertices = new ArrayList<>();
+    static List<String> vertices = new ArrayList<>();
+    static List<Edge> edges = new ArrayList<>();
     int[][] matrix;
+    int[][] showWeight;
 
     public GraphMatrix(int countV, int countE){
         matrix = new int[countV][countV]; // build size matrix
+        showWeight = new int[countV][countV];
         vertices = listVertices(countV); 
         setUp();
         // System.out.println(vertices);
     }
     public GraphMatrix(int countV){
         matrix = new int[countV][countV];
+        showWeight = new int[countV][countV];
         vertices = listVertices(countV); 
         setUp();
         // check
@@ -28,18 +33,7 @@ public class GraphMatrix{
         return vertices;
     }
 
-
-    // public void checkDeg(){
-    //     for(int i = 0; i < matrix.length; i++){
-    //         int degree = 0;
-    //         for(int j = 0; j < matrix.length; j++){
-    //             degree += matrix[i][j]; // Sum the values in each row
-    //         }
-    //         System.out.println("Degree of Vertex " + vertices.get(i) + ": " + degree);
-    //     }
-    // }
-
-    public void isConnected(){
+    public boolean isConnected(){
         boolean[] visited = new boolean[vertices.size()]; // Track visited vertices
         dfs(0, visited);  // Start a Depth-First Search from vertex 0
     
@@ -47,10 +41,11 @@ public class GraphMatrix{
         for (boolean isVisited : visited) {
             if (!isVisited) {
                 System.out.println("Graph is NOT connected");
-                return; // Graph is disconnected
+                return false; // Graph is disconnected
             }
         }
         System.out.println("Graph is connected");
+        return true;
     }
     
     // Helper for Depth-First Search
@@ -65,11 +60,27 @@ public class GraphMatrix{
         }
     }
 
-    public void addEdges(Edge e){
+    public void addEdges(String name, int src, int dst, int w){
+        Edge e = new Edge(name, src, dst, w);
+        edges.add(e);
         System.out.println("---Add Edges: from V" + e.getSrc() + " to V" + e.getDst() + "---");
-        matrix[e.getSrc()][e.getDst()] += 1;
-        matrix[e.getDst()][e.getSrc()] += 1;
+        if (e.getSrc() == e.getDst()){
+            matrix[e.getSrc()][e.getDst()] += 1;
+        }
+        else{
+            matrix[e.getSrc()][e.getDst()] += 1;
+            matrix[e.getDst()][e.getSrc()] += 1;
+        }
         Draw(matrix);
+        addWeight(e);
+    }
+
+    public void addWeight(Edge e){
+        System.out.println("---Update Weight---");
+        showWeight[e.getSrc()][e.getDst()] += e.getW();
+        showWeight[e.getDst()][e.getSrc()] += e.getW();
+
+        Draw(showWeight);
     }
     
     public void Draw(int [][] mt) {
@@ -108,18 +119,28 @@ public class GraphMatrix{
     }
 
     public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
         int countV = 5;
-        int countE = 3;
+
+        //int countE = 3;
         GraphMatrix myG = new GraphMatrix(countV);
 
         // Add Edges endpoint and Weight
-        myG.addEdges(new Edge("e1", 2 ,3 , 50));
-        myG.addEdges(new Edge("e2", 2 ,3 , 80));
-        myG.addEdges(new Edge("e3", 3 ,3 , 50));
-        myG.addEdges(new Edge(0, 2));
-        myG.addEdges(new Edge(0, 1));
-        myG.addEdges(new Edge(1, 2));
-        myG.addEdges(new Edge(1, 4));
+        // while (!myG.isConnected()) {
+        //     String name = sc.next();
+        //     int source = sc.nextInt();
+        //     int dest = sc.nextInt();
+        //     int w = sc.nextInt();
+        //     myG.addEdges(new Edge(name,source, dest,w));
+        // } 
+        
+        //myG.addEdges("e0", 0 ,1 , 7);
+        myG.addEdges("e0", 1 ,2 , 7);
+        myG.addEdges("e1", 2 ,3 , 10);
+        myG.addEdges("e2", 3 ,4 , 8);
+        myG.addEdges("e3", 4 ,0 , 2);
+        // myG.addEdges("e3", 4 ,1 , 2);
 
         // myG.checkDeg();
         myG.isConnected();
