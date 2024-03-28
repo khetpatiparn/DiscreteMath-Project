@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class GraphMatrix{
     // build adjacency matrix
@@ -13,31 +12,63 @@ public class GraphMatrix{
         setUp();
         // System.out.println(vertices);
     }
-    public GraphMatrix(){
+    public GraphMatrix(int countV){
+        matrix = new int[countV][countV];
+        vertices = listVertices(countV); 
         setUp();
+        // check
     }
 
     // build vertex
     public List<String> listVertices(int countVertices){
-        for (int i = 1; i <= countVertices; i++){
+        for (int i = 0; i < countVertices; i++){
             String ver = "v" + i;
             vertices.add(ver);
         }
         return vertices;
     }
 
-    // public isGraph(int countV, int countE){
-        
+
+    // public void checkDeg(){
+    //     for(int i = 0; i < matrix.length; i++){
+    //         int degree = 0;
+    //         for(int j = 0; j < matrix.length; j++){
+    //             degree += matrix[i][j]; // Sum the values in each row
+    //         }
+    //         System.out.println("Degree of Vertex " + vertices.get(i) + ": " + degree);
+    //     }
     // }
 
-    // public checkDeg(){
-        
-    // }
+    public void isConnected(){
+        boolean[] visited = new boolean[vertices.size()]; // Track visited vertices
+        dfs(0, visited);  // Start a Depth-First Search from vertex 0
+    
+        // Check if all vertices have been visited
+        for (boolean isVisited : visited) {
+            if (!isVisited) {
+                System.out.println("Graph is NOT connected");
+                return; // Graph is disconnected
+            }
+        }
+        System.out.println("Graph is connected");
+    }
+    
+    // Helper for Depth-First Search
+    private void dfs(int vertex, boolean[] visited) {
+        visited[vertex] = true;
+    
+        // Explore neighbors
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[vertex][i] > 0 && !visited[i]) {
+                dfs(i, visited); 
+            }
+        }
+    }
 
     public void addEdges(Edge e){
         System.out.println("---Add Edges: from V" + e.getSrc() + " to V" + e.getDst() + "---");
-        matrix[e.getSrc()][e.getDst()] = 1;
-        matrix[e.getDst()][e.getSrc()] = 1;
+        matrix[e.getSrc()][e.getDst()] += 1;
+        matrix[e.getDst()][e.getSrc()] += 1;
         Draw(matrix);
     }
     
@@ -77,19 +108,20 @@ public class GraphMatrix{
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        // Process 1 : Input count of vertex
-        System.out.print("Input Vertex's count: ");
-        int countV = sc.nextInt();
-        // Process 2 : Build Matrix
-        System.out.print("Input Edge's count: ");
-        int countE = sc.nextInt();
-        GraphMatrix myG = new GraphMatrix(countV, countE);
+        int countV = 5;
+        int countE = 3;
+        GraphMatrix myG = new GraphMatrix(countV);
 
         // Add Edges endpoint and Weight
-        // myG.addEdges(new Edge("e1", 1 ,2 , 50));
-        // myG.addEdges(new Edge("e1", 3 ,4 , 100));
-        // myG.setUp();
-        sc.close();
+        myG.addEdges(new Edge("e1", 2 ,3 , 50));
+        myG.addEdges(new Edge("e2", 2 ,3 , 80));
+        myG.addEdges(new Edge("e3", 3 ,3 , 50));
+        myG.addEdges(new Edge(0, 2));
+        myG.addEdges(new Edge(0, 1));
+        myG.addEdges(new Edge(1, 2));
+        myG.addEdges(new Edge(1, 4));
+
+        // myG.checkDeg();
+        myG.isConnected();
     }
 }
