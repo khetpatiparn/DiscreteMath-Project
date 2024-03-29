@@ -16,7 +16,7 @@ public class TitleScreen extends JPanel {
     // Label
     private JLabel lbprojectName;
     // Button
-    private JLabel lbTree, lbFinite, lbExit, lbCredit;
+    protected JLabel lbTree, lbFinite, lbExit, lbCredit;
 
     // Constructor to setup Component and Event handler
     public TitleScreen() {
@@ -36,8 +36,8 @@ public class TitleScreen extends JPanel {
         // Tree Button
         lbTree = new JLabel();
         lbTree.setText("TREE");
-        lbTree.setBounds(340, 190, 590, 60);
-        lbTree.setOpaque(false);
+        lbTree.setBounds(340, 190, 120, 60);
+        lbTree.setOpaque(true);
         lbTree.setFont(new Font("Arial", Font.PLAIN, 40));
         lbTree.setForeground(Color.BLACK);
         add(lbTree);
@@ -45,8 +45,8 @@ public class TitleScreen extends JPanel {
         // Finite state automata Button
         lbFinite = new JLabel();
         lbFinite.setText("FINITE-STATE AUTOMATA");
-        lbFinite.setBounds(145, 300, 590, 60);
-        lbFinite.setOpaque(false);
+        lbFinite.setBounds(145, 300, 520, 60);
+        lbFinite.setOpaque(true);
         lbFinite.setFont(new Font("Arial", Font.PLAIN, 40));
         lbFinite.setForeground(Color.BLACK);
         add(lbFinite);
@@ -54,8 +54,8 @@ public class TitleScreen extends JPanel {
         // Exit Button
         lbExit = new JLabel();
         lbExit.setText("Exit");
-        lbExit.setBounds(359, 430, 590, 60);
-        lbExit.setOpaque(false);
+        lbExit.setBounds(359, 430, 70, 60);
+        lbExit.setOpaque(true);
         lbExit.setFont(new Font("Arial", Font.PLAIN, 40));
         lbExit.setForeground(Color.BLACK);
         add(lbExit);
@@ -63,8 +63,8 @@ public class TitleScreen extends JPanel {
         // Credits Button
         lbCredit = new JLabel();
         lbCredit.setText("Credits");
-        lbCredit.setBounds(30, 500, 600, 60);
-        lbCredit.setOpaque(false);
+        lbCredit.setBounds(30, 500, 70, 60);
+        lbCredit.setOpaque(true);
         lbCredit.setFont(new Font("Arial", Font.PLAIN, 20));
         lbCredit.setForeground(Color.BLACK);
         add(lbCredit);
