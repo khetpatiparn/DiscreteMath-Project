@@ -2,14 +2,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,57 +15,56 @@ public class Tree extends JPanel {
     private final int FRAME_WIDTH = 800;
     private final int FRAME_HEIGHT = 600;
     private final Dimension FRAME_SIZE = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
-    JLabel Head;
-    JButton KButton, PButton, DButton, Back;
 
-    // Store the connections between points
-    private Point[] connections = {
-            new Point(0, 1), // Connect v1 to v2
-            new Point(1, 2), // Connect v2 to v3
-            new Point(2, 3), // Connect v3 to v4
-            new Point(3, 4), // Connect v4 to v5
-            new Point(0, 2), // Connect v1 to v3
-            new Point(1, 3) // Connect v2 to v4
-    };
+    // Label
+    JLabel selectAlgoLabel;
+    // Button
+    JButton KruskalButton, PrimButton, DijkButton, backButton;
 
-    public Tree() {
+    // Set Button sizes and locations
+    int buttonWidth = 200;
+    int buttonHeight = 50;
+    int buttonX = 565;
+    int buttonY = 150;
+
+    GraphSetupScreen graphSetup;
+
+    public Tree(GraphSetupScreen graphSetup) {
+        System.out.println("Constructor from Tree.java");
+        this.graphSetup = graphSetup;
+
+
         setPreferredSize(FRAME_SIZE);
         setLayout(null);
         setBackground(Color.WHITE);
 
-        // JLabel
-        Head = new JLabel("Select Algorithm");
-        Head.setBounds(555, 50, 590, 60);
-        Head.setOpaque(false);
-        Head.setFont(new Font("Arial", Font.PLAIN, 30));
-        Head.setForeground(Color.WHITE);
-        add(Head);
+        // Select Algo Label 
+        selectAlgoLabel = new JLabel("Select Algorithm");
+        selectAlgoLabel.setBounds(555, 50, 590, 60);
+        selectAlgoLabel.setOpaque(false);
+        selectAlgoLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        selectAlgoLabel.setForeground(Color.WHITE);
+        add(selectAlgoLabel);
 
         // Create Buttons
-        KButton = new JButton("Kruskal's algorithm");
-        PButton = new JButton("Prim's algorithm");
-        DButton = new JButton("Dijkstra's algorithm");
-        Back = new JButton("Back");
+        KruskalButton = new JButton("Kruskal's algorithm");
+        PrimButton = new JButton("Prim's algorithm");
+        DijkButton = new JButton("Dijkstra's algorithm");
+        backButton = new JButton("Back");
 
-        // Set Button sizes and locations
-        int buttonWidth = 200;
-        int buttonHeight = 50;
-        int BXaxis = 565;
-        int BYaxis = 150;
-
-        KButton.setBounds(BXaxis, BYaxis, buttonWidth, buttonHeight);
-        PButton.setBounds(BXaxis, BYaxis + 100, buttonWidth, buttonHeight);
-        DButton.setBounds(BXaxis, BYaxis + 200, buttonWidth, buttonHeight);
-        Back.setBounds(BXaxis, BYaxis + 300, buttonWidth, buttonHeight);
+        KruskalButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+        PrimButton.setBounds(buttonX, buttonY + 100, buttonWidth, buttonHeight);
+        DijkButton.setBounds(buttonX, buttonY + 200, buttonWidth, buttonHeight);
+        backButton.setBounds(buttonX, buttonY + 300, buttonWidth, buttonHeight);
 
         // Add Buttons to display
-        add(KButton);
-        add(PButton);
-        add(DButton);
-        add(Back);
+        add(KruskalButton);
+        add(PrimButton);
+        add(DijkButton);
+        add(backButton);
 
         // Implement Button Listeners (Placeholders for Algorithms)
-        KButton.addActionListener(new ActionListener() {
+        KruskalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Implement Kruskal's Algorithm here
@@ -76,28 +73,21 @@ public class Tree extends JPanel {
             }
         });
 
-        PButton.addActionListener(new ActionListener() {
+        PrimButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement Prim's Algorithm here
-                // Modify drawing in paintComponent as needed
+        //         // Implement Prim's Algorithm here
+        //         // Modify drawing in paintComponent as needed
                 repaint();
             }
         });
 
-        DButton.addActionListener(new ActionListener() {
+        DijkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement Dijkstra's Algorithm here
-                // Modify drawing in paintComponent as needed
-                repaint();
-            }
-        });
-
-        Back.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+        //         // Implement Dijkstra's Algorithm here
+        //         // Modify drawing in paintComponent as needed
+        //         repaint();
             }
         });
     }
@@ -116,17 +106,17 @@ public class Tree extends JPanel {
         // Draw random points outside the red rectangle
         g.setColor(Color.BLACK);
 
-        int minX = 10;
-        int minY = 10;
-        int maxX = mainRectX - 10;
-        int maxY = getHeight() - 10;
+        int minX = 50;
+        int minY = 50;
+        int maxX = mainRectX - 50;
+        int maxY = getHeight() - 50;
 
         int pointSize = 10;
 
         int[] drawnX = new int[20];
         int[] drawnY = new int[20];
 
-        int numPoints = 5;
+        int numPoints = Integer.parseInt(graphSetup.getInputVertexField().getText());
         for (int i = 0; i < numPoints; i++) {
             int randomX, randomY;
             do {
@@ -145,12 +135,15 @@ public class Tree extends JPanel {
         // Draw lines between connected points
         g.setColor(Color.BLUE);
         Set<String> usedLabels = new HashSet<>();
+        
+        // Store the connections between points
+        List<Edge> edgelst = graphSetup.getEdgeList();
 
-        for (Point connection : connections) {
-            int startX = drawnX[connection.x] + pointSize / 2;
-            int startY = drawnY[connection.x] + pointSize / 2;
-            int endX = drawnX[connection.y] + pointSize / 2;
-            int endY = drawnY[connection.y] + pointSize / 2;
+        for (Edge edge : edgelst) {
+            int startX = drawnX[edge.getSrc()] + pointSize / 2;
+            int startY = drawnY[edge.getSrc()] + pointSize / 2;
+            int endX = drawnX[edge.getDst()] + pointSize / 2;
+            int endY = drawnY[edge.getDst()] + pointSize / 2;
             g.drawLine(startX, startY, endX, endY);
 
             // Generate a unique label

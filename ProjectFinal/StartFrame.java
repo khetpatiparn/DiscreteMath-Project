@@ -25,7 +25,7 @@ public class StartFrame extends JFrame{
         creditscreen = new Creditscreen();
         graphSetupScreen = new GraphSetupScreen();
         matrix = new Matrix();
-        tree = new Tree();
+        tree = new Tree(graphSetupScreen);
         
         fsa = new FSA(6);
         
@@ -110,7 +110,7 @@ public class StartFrame extends JFrame{
         public void actionPerformed(ActionEvent e) {
             System.out.println("Back button's clicked");
             graphSetupScreen.clearButton.addActionListener(new GraphSetupScreen().new clearAction());
-            System.out.println(graphSetupScreen.edgeList);
+            System.out.println(graphSetupScreen.getEdgeList());
             cp.remove(graphSetupScreen);
             cp.add(titleScreen);
             cp.revalidate();

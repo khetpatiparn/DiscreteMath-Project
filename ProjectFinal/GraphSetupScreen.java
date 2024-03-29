@@ -54,7 +54,7 @@ public class GraphSetupScreen extends JPanel {
     
     private int edgeCount = 1;
 
-    List<Edge> edgeList = new ArrayList<>();; // เก็บอ็อบเจ็กต์ Edge ที่สร้างขึ้น
+    private List<Edge> edgeList = new ArrayList<>();; // เก็บอ็อบเจ็กต์ Edge ที่สร้างขึ้น
     
     public GraphSetupScreen() {
         setPreferredSize(FRAME_SIZE);
@@ -288,5 +288,17 @@ public class GraphSetupScreen extends JPanel {
             finishButton.setEnabled(false);       
             System.out.println("Clear Edges List"); 
         }
+    }
+
+    public JTextField getInputVertexField() {
+        return inputVertexField;
+    }
+
+    public JTextField getInputWeightField() {
+        return inputWeightField;
+    }
+
+    public List<Edge> getEdgeList() {
+        return edgeList;
     }
 }
