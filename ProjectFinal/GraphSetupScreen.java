@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -43,6 +44,7 @@ public class GraphSetupScreen extends JPanel {
     // Button
     private JButton submitButton;
     private JButton clearButton;
+    private JButton backButton;
 
     // TextPane & ScrollPane
     private JTextPane dataLabel;
@@ -113,6 +115,11 @@ public class GraphSetupScreen extends JPanel {
         clearButton.setBounds(550, 200, 100, 30);
         // add(clearButton);
 
+        // Back Button
+        backButton = new JButton("Back");
+        backButton.setBounds(330, 490, 100, 30);
+        add(backButton);
+
         // TextPane
         dataLabel = new JTextPane();
         dataLabel.setOpaque(false);
@@ -136,6 +143,8 @@ public class GraphSetupScreen extends JPanel {
                 edgeCount = 1; // รีเซ็ตจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
             }
         });
+
+        addMouseMotionListener(new MousePositionCheck());
 
          // Add document listener to inputWeightField
         inputWeightField.getDocument().addDocumentListener(new DocumentListener() {
@@ -255,6 +264,14 @@ public class GraphSetupScreen extends JPanel {
 
             edgeCount++; // เพิ่มจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
             System.out.println(edgeList);
+        }
+    }
+
+    private class MousePositionCheck extends MouseAdapter{
+        @Override
+        public void mouseMoved(MouseEvent e) {
+        // Check mouse's position
+        System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
         }
     }
 }
