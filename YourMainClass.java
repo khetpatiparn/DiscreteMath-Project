@@ -3,7 +3,7 @@ import java.util.List;
 public class YourMainClass { // Or whatever your main class is named
     public static void main(String[] args) {
         // ... set up your GraphMatrix object (myG) ...
-        int countV = 6;
+        int countV = 6; //need to be an input
 
         GraphMatrix myG = new GraphMatrix(countV);
 
@@ -31,32 +31,29 @@ public class YourMainClass { // Or whatever your main class is named
         myG.addEdges("e5", 4 ,5 , 12);
         myG.isConnected();
 
-
         //Kruskal
         List<Edge> mstEdges = Kruskal.findMST(myG);
 
         System.out.println("MST Edges Kruskal's algorithms:");
         for (Edge edge : mstEdges) {
-            System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight-" + edge.getW());
+            System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight-" + edge.getWeight());
         }
         System.out.println(mstEdges);
         System.out.println();
 
         //Prim's
         Prim prims = new Prim(myG);  
-
         // Find the MST using Prim's algorithm
         List<Edge> mstEdgesprim = prims.findMST(); 
         System.out.println("MST Edges Prim's algorithms:");
         for (Edge edge : mstEdgesprim) {
-            System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight-" + edge.getW());
+            System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight-" + edge.getWeight());
         }
 
         //Dijkstra's
         System.out.println();
         System.out.println("Dijkstra's Shortest Path : ");
-        Dijkstra shortestDjk = new Dijkstra() ;
-        shortestDjk.dijkstra(GraphMatrix.showWeight, 0);
-        //shortestDjk.dijkstra(countV, GraphMatrix.showWeight, 0);
+        Dijkstra shortestDjk = new Dijkstra(countV,GraphMatrix.showWeight,4); //source needs to be input
+        shortestDjk.dijkstra();
     }
 }
