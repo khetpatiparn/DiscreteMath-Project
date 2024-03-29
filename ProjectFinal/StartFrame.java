@@ -1,29 +1,31 @@
 import javax.swing.JFrame;
 import java.awt.Container;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class StartFrame extends JFrame{
+    // Screen
+    TitleScreen titleScreen;
+    // Creditscreen creditscreen;
+    Tree tree;
+    FSA fsa;
+    GraphSetupScreen graphSetupScreen;
+    Matrix matrix;
+    
+    Container cp;
+    
     public StartFrame() {
-        Container cp;
-        Creditscreen creditscreen;
-        Title title;
-        Tree tree;
-        FSA fsa;
-        TreeSetup ts;
-        Matrix matrix;
         cp = getContentPane();
-        // title = new Title();
+        // Add the Screen
+        titleScreen = new TitleScreen();
         // creditscreen = new Creditscreen();
-         ts = new TreeSetup();
+        graphSetupScreen = new GraphSetupScreen();
         // matrix = new Matrix(); 
         // tree = new Tree();
         
-        //fsa = new FSA(6);
+        // fsa = new FSA(6);
         
-        // cp.add(title);
+        // cp.add(titleScreen);
         // cp.add(creditscreen);
-         cp.add(ts);
+        cp.add(graphSetupScreen);
         // cp.add(matrix);
         // cp.add(tree);
          //cp.add(fsa);
@@ -40,25 +42,7 @@ public class StartFrame extends JFrame{
         setResizable(false);
         setVisible(true);
     }
-     
-    // Inner Class Event 
-    private class NavigationTitleScreen extends MouseAdapter{
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            super.mouseClicked(e);
-           
-
-            }
-        }
-    private class NavBackCredits extends MouseAdapter{
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            super.mouseClicked(e);
-               
-    
-            }
-        }
-    }
+}
 
 
 
