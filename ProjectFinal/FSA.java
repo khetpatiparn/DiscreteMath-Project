@@ -2,16 +2,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 
 public class FSA extends JPanel {
     private final int FRAME_WIDTH = 800;
@@ -23,6 +27,9 @@ public class FSA extends JPanel {
     JButton submitButton, clearButton, exitButton; // Added exitButton
     JComboBox<Integer> comboBox;
     JTextField textField;
+    JPanel outputPanel; // Added JPanel for output
+    JLabel outputLabel; // Added JLabel for displaying output
+    private BufferedImage image;
 
     public FSA(int input) {
         setPreferredSize(FRAME_SIZE); // set Size of Title Game Screen
@@ -82,6 +89,7 @@ public class FSA extends JPanel {
                 String inputText = textField.getText();
                 System.out.println(inputText);
                 // Process the input text here
+                outputLabel.setText("Output: " + inputText);
             }
         });
         add(submitButton);
@@ -101,6 +109,12 @@ public class FSA extends JPanel {
         exitButton = new JButton("Exit");
         exitButton.setBounds(565, 500, 200, 30); // Adjusted position
         add(exitButton);
+
+        try {
+            image = ImageIO.read(new java.io.File("FiniteGraph.jpg"));
+        } catch (Exception e) {
+            System.err.println("Error loading image: " + e.getMessage());
+        }
     }
 
     @Override
@@ -113,5 +127,10 @@ public class FSA extends JPanel {
         int mainRectY = (getHeight() - mainRectHeight) / 2; // คำนวณตำแหน่ง Y ให้สี่เหลี่ยมอยู่ตรงกลางของ JPanel
         g.setColor(Color.RED); // เปลี่ยนสีตามที่คุณต้องการ
         g.fillRect(mainRectX, mainRectY, mainRectWidth, mainRectHeight); // วาดสี่เหลี่ยมหลัก
+
+        // Draw image (adjust position and size as needed)
+        if (image != null) {
+            ((Graphics2D) g).drawImage(image, 60, 190, 400, 150, null); // Adjust X, Y, width, and height
+        }
     }
 }
