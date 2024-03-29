@@ -1,9 +1,12 @@
 public class FiniteMain {
-    public static void main(String[] args) {
-        // Create state
+    static boolean isAccepted = true;
+    State startState;
+
+    public FiniteMain(String input,Integer start) {
+        //Create state
         State s0 = new State("s0");
         State s1 = new State("s1");
-        State s2 = new State("s1", true); // final state
+        State s2 = new State("s2", true); // final state
 
         // Define transitions
         s0.addTransition('0', s1);
@@ -14,14 +17,31 @@ public class FiniteMain {
         s2.addTransition('1', s0);
 
         checkFiniteAuto fn = new checkFiniteAuto();
-        fn.defineAutomata(s0);
-
-        String input = "10101101"; //user's input
-
-        if(fn.isInputAccepted(input)){
-            System.out.println(input + " is ACCEPTED.");
+        if(start == 0) {
+            startState = s0;
+        }else if(start == 1) {
+            startState = s1;
         }else {
-            System.out.println(input + " is REJECTED!");
-        } 
+            startState = s2;
+        }
+        fn.defineAutomata(startState);
+        sendAccept(fn, input);
+
+        if (isAccepted) {
+            System.out.println(input + " is ACCEPTED.");
+        } else {
+            System.out.println(input + " is REJECTED.");
+        }
+
+
+    }
+
+    public boolean sendAccept(checkFiniteAuto fn, String input) {
+        if(fn.isInputAccepted(input)){
+            isAccepted = true;
+        }else {
+            isAccepted = false;
+        }
+        return isAccepted;
     }
 }
