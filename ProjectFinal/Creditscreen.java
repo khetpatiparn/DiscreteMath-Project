@@ -1,11 +1,9 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 public class Creditscreen extends JPanel {
     JLabel creditsTitle, name1, name2, name3;
@@ -42,7 +40,7 @@ public class Creditscreen extends JPanel {
         add(name2);
 
         name3 = new JLabel();
-        name3.setText("66050301  Pichsinee Jirawattanakasem");
+        name3.setText("66050301  PICHSINEE JIRAWATTANAKASEM");
         name3.setBounds(223, 250, 490, 80);
         name3.setForeground(Color.black);
         name3.setFont(new Font("Arial", Font.PLAIN, 20));
