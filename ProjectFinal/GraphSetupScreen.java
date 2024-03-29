@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -43,8 +44,9 @@ public class GraphSetupScreen extends JPanel {
 
     // Button
     private JButton submitButton;
-    private JButton clearButton;
-    private JButton backButton;
+    protected JButton clearButton;
+    protected JButton backButton;
+    protected JButton finishButton;
 
     // TextPane & ScrollPane
     private JTextPane dataLabel;
@@ -115,9 +117,15 @@ public class GraphSetupScreen extends JPanel {
         clearButton.setBounds(550, 200, 100, 30);
         // add(clearButton);
 
+        // Finish Button
+        finishButton = new JButton("Finish");
+        finishButton.setBounds(250, 490, 100, 30);
+        finishButton.setEnabled(false); // Initially disable the finish button
+        add(finishButton);
+
         // Back Button
         backButton = new JButton("Back");
-        backButton.setBounds(330, 490, 100, 30);
+        backButton.setBounds(430, 490, 100, 30);
         add(backButton);
 
         // TextPane
@@ -133,16 +141,8 @@ public class GraphSetupScreen extends JPanel {
         submitButton.addActionListener(new submitAction());
         
         
-        clearButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                inputVertexField.setText("");
-                inputVertexField.setEditable(true);
-                edgeList.clear(); // ล้างรายการทั้งหมดใน edgeList
-                dataLabel.setText(""); // ล้างข้อความใน JLabel
-                edgeCount = 1; // รีเซ็ตจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
-            }
-        });
+        clearButton.addActionListener(new clearAction());
+        backButton.addActionListener(new clearAction());
 
         addMouseMotionListener(new MousePositionCheck());
 
@@ -264,6 +264,7 @@ public class GraphSetupScreen extends JPanel {
 
             edgeCount++; // เพิ่มจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
             System.out.println(edgeList);
+            finishButton.setEnabled(true);
         }
     }
 
@@ -271,7 +272,21 @@ public class GraphSetupScreen extends JPanel {
         @Override
         public void mouseMoved(MouseEvent e) {
         // Check mouse's position
-        System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
+        // System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
+        }
+    }
+
+    protected class clearAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            inputVertexField.setText("");
+            inputVertexField.setEditable(true);
+            inputWeightField.setText("");
+            edgeList.clear(); // ล้างรายการทั้งหมดใน edgeList
+            dataLabel.setText(""); // ล้างข้อความใน JLabel
+            edgeCount = 1; // รีเซ็ตจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
+            finishButton.setEnabled(false);       
+            System.out.println("Clear Edges List"); 
         }
     }
 }
