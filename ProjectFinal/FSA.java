@@ -100,12 +100,6 @@ public class FSA extends JPanel {
         // Exit Button
         exitButton = new JButton("Exit");
         exitButton.setBounds(565, 500, 200, 30); // Adjusted position
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Exits the program
-            }
-        });
         add(exitButton);
     }
 
