@@ -263,7 +263,9 @@ public class GraphSetupScreen extends JPanel {
 
             edgeCount++; // เพิ่มจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
             System.out.println(edgeList);
-            finishButton.setEnabled(true);
+            if(isConnected()){
+                finishButton.setEnabled(true);
+            }
         }
     }
 
@@ -299,5 +301,27 @@ public class GraphSetupScreen extends JPanel {
 
     public List<Edge> getEdgeList() {
         return edgeList;
+    }
+
+    public boolean isConnected() {
+        int oldVertexCount = Integer.parseInt(inputVertexField.getText()); // ค่าเดิม
+        int newVertexCount = oldVertexCount; // ค่าใหม่เท่ากับค่าเดิม
+        
+        // Check if all vertices from 1 to newVertexCount exist in edgeList
+        for (int i = 1; i <= newVertexCount; i++) {
+            boolean found = false;
+            for (Edge edge : edgeList) {
+                if (edge.getSrc() == i || edge.getDst() == i) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                System.out.println("Graph isn't connected");
+                return false; // If any vertex is not connected, return false
+            }
+        }
+        System.out.println("Graph is connected");
+        return true; // If all vertices are connected, return true
     }
 }
