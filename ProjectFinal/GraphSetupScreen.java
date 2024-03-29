@@ -255,7 +255,6 @@ public class GraphSetupScreen extends JPanel {
                 dataBuilder.append(edge.getName()).append(": ").append(edge.getSrc()).append(" to ")
                         .append(edge.getDst()).append(" weight ").append(edge.getWeight()).append("\n");
             }
-            dataLabel.setText(dataBuilder.toString());
 
             // นำข้อความที่สร้างเข้าสู่ JLabel
             dataLabel.setText(dataBuilder.toString());
