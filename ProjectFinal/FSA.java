@@ -23,11 +23,11 @@ public class FSA extends JPanel {
     JLabel Head;
     JLabel selectStartStateLabel;
     JLabel separatorLabel;
+    JLabel outputLabel; // Added outputLabel
     JButton submitButton, clearButton, exitButton; // Added exitButton
     JComboBox<Integer> comboBox;
     JTextField textField;
     JPanel outputPanel; // Added JPanel for output
-    JLabel outputLabel; // Added JLabel for displaying output
     private BufferedImage image;
 
     public FSA() {
@@ -92,7 +92,13 @@ public class FSA extends JPanel {
                 String inputText = textField.getText();
                 System.out.println(inputText);
                 // Process the input text here
-                outputLabel.setText("Output: " + inputText);
+                if (inputText.equals("1")) {
+                    outputLabel.setText("Output: Accept");
+                } else if (inputText.equals("0")) {
+                    outputLabel.setText("Output: Reject");
+                } else {
+                    outputLabel.setText("Output: Invalid ");
+                }
             }
         });
         add(submitButton);
@@ -104,6 +110,7 @@ public class FSA extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 textField.setText("");
+                outputLabel.setText("Output: ");
             }
         });
         add(clearButton);
@@ -112,6 +119,12 @@ public class FSA extends JPanel {
         exitButton = new JButton("Exit");
         exitButton.setBounds(labelXaxis, 500, 200, 30); // Adjusted position
         add(exitButton);
+
+        outputLabel = new JLabel("Output: ");
+        outputLabel.setBounds(labelXaxis, labelYaxis + 250, 200, 30);
+        outputLabel.setForeground(Color.WHITE);
+        outputLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+        add(outputLabel);
 
         try {
             image = ImageIO.read(new java.io.File("FiniteGraph.jpg"));
