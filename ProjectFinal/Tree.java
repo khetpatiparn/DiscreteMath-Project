@@ -93,73 +93,82 @@ public class Tree extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int mainRectWidth = 250;
-        int mainRectHeight = 600;
-        int mainRectX = getWidth() - mainRectWidth;
-        int mainRectY = (getHeight() - mainRectHeight) / 2;
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    int mainRectWidth = 250;
+    int mainRectHeight = 600;
+    int mainRectX = getWidth() - mainRectWidth;
+    int mainRectY = (getHeight() - mainRectHeight) / 2;
 
-        g.setColor(Color.RED);
-        g.fillRect(mainRectX, mainRectY, mainRectWidth, mainRectHeight);
+    g.setColor(Color.RED);
+    g.fillRect(mainRectX, mainRectY, mainRectWidth, mainRectHeight);
 
-        // Draw random points outside the red rectangle
-        g.setColor(Color.BLACK);
+    // Draw random points outside the red rectangle
+    g.setColor(Color.BLACK);
 
-        int minX = 50;
-        int minY = 50;
-        int maxX = mainRectX - 50;
-        int maxY = getHeight() - 50;
+    int minX = 50;
+    int minY = 50;
+    int maxX = mainRectX - 50;
+    int maxY = getHeight() - 50;
 
-        int pointSize = 10;
+    int pointSize = 10;
 
-        int[] drawnX = new int[20];
-        int[] drawnY = new int[20];
+    int[] drawnX = new int[20];
+    int[] drawnY = new int[20];
 
-        int numPoints = Integer.parseInt(graphSetup.getInputVertexField().getText());
-        for (int i = 0; i < numPoints; i++) {
-            int randomX, randomY;
-            do {
-                randomX = (int) (Math.random() * (maxX - minX)) + minX;
-                randomY = (int) (Math.random() * (maxY - minY)) + minY;
-            } while (isTooClose(randomX, randomY, drawnX, drawnY, i));
+    int numPoints = Integer.parseInt(graphSetup.getInputVertexField().getText());
 
-            drawnX[i] = randomX;
-            drawnY[i] = randomY;
-
-            g.fillOval(randomX, randomY, pointSize, pointSize);
-            String label = "v" + (i + 1);
-            g.drawString(label, randomX + pointSize, randomY);
-        }
-
-        // Draw lines between connected points
-        g.setColor(Color.BLUE);
-        Set<String> usedLabels = new HashSet<>();
-        
-        // Store the connections between points
-        List<Edge> edgelst = graphSetup.getEdgeList();
-
-        for (Edge edge : edgelst) {
-            int startX = drawnX[edge.getSrc()] + pointSize / 2;
-            int startY = drawnY[edge.getSrc()] + pointSize / 2;
-            int endX = drawnX[edge.getDst()] + pointSize / 2;
-            int endY = drawnY[edge.getDst()] + pointSize / 2;
-            g.drawLine(startX, startY, endX, endY);
-
-            // Generate a unique label
-            String label;
-            int labelNum = 1;
-            do {
-                label = "e" + labelNum++;
-            } while (usedLabels.contains(label));
-
-            usedLabels.add(label);
-
-            int labelX = (startX + endX) / 2;
-            int labelY = (startY + endY) / 2 - 10;
-            g.drawString(label, labelX, labelY);
-        }
+    // Find the minimum vertex index
+    int minVertexIndex = Integer.MAX_VALUE;
+    for (Edge edge : graphSetup.getEdgeList()) {
+        minVertexIndex = Math.min(minVertexIndex, Math.min(edge.getSrc(), edge.getDst()));
     }
+
+    for (int i = 0; i < numPoints; i++) {
+        int randomX, randomY;
+        do {
+            randomX = (int) (Math.random() * (maxX - minX)) + minX;
+            randomY = (int) (Math.random() * (maxY - minY)) + minY;
+        } while (isTooClose(randomX, randomY, drawnX, drawnY, i));
+
+        drawnX[i] = randomX;
+        drawnY[i] = randomY;
+
+        g.fillOval(randomX, randomY, pointSize, pointSize);
+        
+        String label = "v" + (i + minVertexIndex); // Adjust the label to start from v1
+        g.drawString(label, randomX + pointSize, randomY);
+    }
+
+    // Draw lines between connected points
+    g.setColor(Color.BLUE);
+    Set<String> usedLabels = new HashSet<>();
+    
+    // Store the connections between points
+    List<Edge> edgelst = graphSetup.getEdgeList();
+
+    for (Edge edge : edgelst) {
+        int startX = drawnX[edge.getSrc() - minVertexIndex] + pointSize / 2; // Adjust the index to start from 0
+        int startY = drawnY[edge.getSrc() - minVertexIndex] + pointSize / 2;
+        int endX = drawnX[edge.getDst() - minVertexIndex] + pointSize / 2;
+        int endY = drawnY[edge.getDst() - minVertexIndex] + pointSize / 2;
+        g.drawLine(startX, startY, endX, endY);
+
+        // Generate a unique label
+        String label;
+        int labelNum = 1;
+        do {
+            label = "e" + labelNum++;
+        } while (usedLabels.contains(label));
+
+        usedLabels.add(label);
+
+        int labelX = (startX + endX) / 2;
+        int labelY = (startY + endY) / 2 - 10;
+        g.drawString(label, labelX, labelY);
+    }
+}
+
 
     // Function to prevent points from being too close
     private boolean isTooClose(int x, int y, int[] drawnX, int[] drawnY, int numDrawn) {
