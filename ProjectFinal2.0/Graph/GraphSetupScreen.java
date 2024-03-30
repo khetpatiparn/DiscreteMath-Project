@@ -38,8 +38,8 @@ public class GraphSetupScreen extends JPanel {
     private JLabel toLabel;
 
     // Textfield
-    private JTextField inputVertexField;
-    private JTextField inputWeightField;
+    static JTextField inputVertexField;
+    public JTextField inputWeightField;
 
     // CommbBox
     private JComboBox<String> fromVertexChoice;
@@ -311,6 +311,7 @@ public class GraphSetupScreen extends JPanel {
             inputVertexField.setEditable(true);
             inputWeightField.setText("");
             edgeList.clear(); // ล้างรายการทั้งหมดใน edgeList
+            
             dataLabel.setText(""); // ล้างข้อความใน JLabel
             edgeCount = 1; // รีเซ็ตจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
             finishButton.setEnabled(false);       
