@@ -22,7 +22,7 @@ public class GraphMatrix{
         this.edges = edges;
     }
 
-    int[][] showWeight;
+    static int[][] showWeight;
 
     
 

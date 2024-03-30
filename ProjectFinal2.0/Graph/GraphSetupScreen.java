@@ -39,7 +39,7 @@ public class GraphSetupScreen extends JPanel {
     private JLabel toLabel;
 
     // Textfield
-    JTextField inputVertexField;
+    static JTextField inputVertexField;
     private JTextField inputWeightField;
 
     // CommbBox
