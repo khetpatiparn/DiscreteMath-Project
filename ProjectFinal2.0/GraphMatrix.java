@@ -1,7 +1,7 @@
 package Graph;
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class GraphMatrix{
     // build adjacency matrix
@@ -26,6 +26,18 @@ public class GraphMatrix{
 
     
 
+    public int[][] getMatrix() {
+        return matrix;
+    }
+    public void setMatrix(int[][] matrix) {
+        this.matrix = matrix;
+    }
+    public int[][] getShowWeight() {
+        return showWeight;
+    }
+    public void setShowWeight(int[][] showWeight) {
+        this.showWeight = showWeight;
+    }
     public GraphMatrix(int countV, int countE){
         matrix = new int[countV][countV]; // build size matrix
         showWeight = new int[countV][countV];
@@ -57,11 +69,11 @@ public class GraphMatrix{
         // Check if all vertices have been visited
         for (boolean isVisited : visited) {
             if (!isVisited) {
-                //System.out.println("Graph is NOT connected");
+                System.out.println("Graph is NOT connected");
                 return false; // Graph is disconnected
             }
         }
-        //System.out.println("Graph is connected");
+        System.out.println("Graph is connected");
         return true;
     }
     
@@ -92,10 +104,25 @@ public class GraphMatrix{
         addWeight(e);
     }
 
+    public void addEdges(Edge e){
+        edges.add(e);
+        System.out.println("---Add Edges: from V" + e.getSrc() + " to V" + e.getDst() + "---");
+        if (e.getSrc() == e.getDst()){
+            matrix[e.getSrc() - 1][e.getDst() - 1] += 1;
+        }
+        else{
+            matrix[e.getSrc() - 1][e.getDst() - 1] += 1;
+            matrix[e.getDst() - 1][e.getSrc() - 1] += 1;
+        }
+        Draw(matrix);
+        addWeight(e);
+    }
+
     public void addWeight(Edge e){
         System.out.println("---Update Weight---");
         showWeight[e.getSrc() - 1][e.getDst() - 1] += e.getWeight();
         showWeight[e.getDst() - 1][e.getSrc() - 1] += e.getWeight();
+
         Draw(showWeight);
     }
     
