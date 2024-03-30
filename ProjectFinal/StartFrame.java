@@ -15,7 +15,10 @@ public class StartFrame extends JFrame{
     FSA fsa;
     GraphSetupScreen graphSetupScreen;
     Matrix matrix;
-    
+
+    // add
+    GraphMatrix graphMatrix;
+    //
     Container cp;
     
     public StartFrame() {
@@ -23,11 +26,11 @@ public class StartFrame extends JFrame{
         // Add the Screen
         titleScreen = new TitleScreen();
         creditscreen = new Creditscreen();
-        graphSetupScreen = new GraphSetupScreen();
+        graphSetupScreen = new GraphSetupScreen(graphMatrix);
         matrix = new Matrix();
         tree = new Tree(graphSetupScreen);
         
-        fsa = new FSA(6);
+        fsa = new FSA();
         
         cp.add(titleScreen);
         // cp.add(creditscreen);
@@ -109,7 +112,7 @@ public class StartFrame extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("Back button's clicked");
-            graphSetupScreen.clearButton.addActionListener(new GraphSetupScreen().new clearAction());
+            graphSetupScreen.clearButton.addActionListener(new GraphSetupScreen(graphMatrix).new clearAction());
             System.out.println(graphSetupScreen.getEdgeList());
             cp.remove(graphSetupScreen);
             cp.add(titleScreen);

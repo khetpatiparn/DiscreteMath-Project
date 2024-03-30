@@ -25,6 +25,8 @@ public class GraphSetupScreen extends JPanel {
     private final int FRAME_HEIGHT = 600;
     private final Dimension FRAME_SIZE = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
 
+    GraphMatrix graphMatrix; 
+
     // Label Header
     private JLabel setupGraphLabel;
 
@@ -56,7 +58,8 @@ public class GraphSetupScreen extends JPanel {
 
     private List<Edge> edgeList = new ArrayList<>();; // เก็บอ็อบเจ็กต์ Edge ที่สร้างขึ้น
     
-    public GraphSetupScreen() {
+    public GraphSetupScreen(GraphMatrix graphMatrix) {
+        this.graphMatrix = graphMatrix;
         setPreferredSize(FRAME_SIZE);
         setLayout(null);
         setBackground(Color.WHITE);
@@ -163,6 +166,28 @@ public class GraphSetupScreen extends JPanel {
                 checkSubmitButtonState();
             }
         });
+
+        finishButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // สร้างอ็อบเจ็กต์ GraphMatrix
+                GraphMatrix graphMatrix = new GraphMatrix(Integer.parseInt(inputVertexField.getText()), edgeList.size());
+        
+                // ส่งข้อมูลจาก edgeList ไปยัง GraphMatrix เพื่อสร้าง adjacency matrix และ weight matrix
+                for (Edge edge : edgeList) {
+                    graphMatrix.addEdges(edge.getName(), edge.getSrc(), edge.getDst(), edge.getWeight());
+                }
+        
+                // ทำการตรวจสอบว่ากราฟเชื่อมกันหรือไม่
+                if (graphMatrix.isConnected()) {
+                    // แสดงข้อความหรือดำเนินการต่อตามที่ต้องการ
+                    System.out.println("Graph is connected.");
+                } else {
+                    // แสดงข้อความหรือดำเนินการต่อตามที่ต้องการ
+                    System.out.println("Graph is not connected.");
+                }
+            }
+        }); 
     }// Constructor
     
     private void checkSubmitButtonState() {
@@ -171,6 +196,7 @@ public class GraphSetupScreen extends JPanel {
     }
     
     private void createVertexChoices() {
+        System.out.println("set input vertex");
         String vertexCountText = inputVertexField.getText(); // 5
         int vertexCount = 0;
         
@@ -324,4 +350,5 @@ public class GraphSetupScreen extends JPanel {
         System.out.println("Graph is connected");
         return true; // If all vertices are connected, return true
     }
+    
 }
