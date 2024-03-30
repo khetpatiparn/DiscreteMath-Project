@@ -82,43 +82,10 @@ public class Tree extends JPanel {
         changeGraphButton.addActionListener(e -> repaint());
         addMouseMotionListener(new MousePositionCheck());
 
-        PrimButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GraphMatrix gmt = new GraphMatrix(countOfVertex);
-                for (Edge item : edgelst) {
-                    gmt.addEdges(item);
-                }
-                Prim prims = new Prim(gmt);
+        PrimButton.addActionListener(new PrimButton());
+        KruskalButton.addActionListener(new KruskalAlgo());
 
-                List<Edge> mstEdgesprim = prims.findMST();
-                StringBuilder resultBuilder = new StringBuilder("MST Edges (Kruskal's Algorithm):\n");
-                System.out.println("MST Edges Prim's algorithms:");
-            for (Edge edge : mstEdgesprim) {
-                System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight:"
-                        + edge.getWeight());
-            }
-
-                for (Edge edge : mstEdgesprim) {
-                    resultBuilder.append(edge.getName())
-                            .append(": Src-")
-                            .append(edge.getSrc())
-                            .append(", Dst-")
-                            .append(edge.getDst())
-                            .append(", Weight:")
-                            .append(edge.getWeight())
-                            .append("\n");
-                }
-
-                // Create the scrollable area for the results
-                JTextArea textArea = new JTextArea(resultBuilder.toString());
-                JScrollPane scrollPane = new JScrollPane(textArea);
-                scrollPane.setPreferredSize(new Dimension(350, 200));
-
-                // Show the results in a JOptionPane
-                JOptionPane.showMessageDialog(Tree.this, scrollPane, "Kruskal's Results", JOptionPane.PLAIN_MESSAGE);
-            }
-        });
+        
     }
 
     @Override
@@ -221,7 +188,79 @@ public class Tree extends JPanel {
             // System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
         }
     }
+    private class  PrimButton implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            GraphMatrix gmt = new GraphMatrix(countOfVertex);
+            for (Edge item : edgelst) {
+                gmt.addEdges(item);
+            }
+            Prim prims = new Prim(gmt);
 
-    
+            List<Edge> mstEdgesprim = prims.findMST();
+            StringBuilder resultBuilder = new StringBuilder("MST Edges (Prim's Algorithm):\n");
+            System.out.println("MST Edges Prim's algorithms:");
+            for (Edge edge : mstEdgesprim) {
+                System.out
+                        .println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight:"
+                                + edge.getWeight());
+            }
 
+            for (Edge edge : mstEdgesprim) {
+                resultBuilder.append(edge.getName())
+                        .append(": Src-")
+                        .append(edge.getSrc())
+                        .append(", Dst-")
+                        .append(edge.getDst())
+                        .append(", Weight:")
+                        .append(edge.getWeight())
+                        .append("\n");
+            }
+
+            // Create the scrollable area for the results
+            JTextArea textArea = new JTextArea(resultBuilder.toString());
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setPreferredSize(new Dimension(350, 200));
+
+            // Show the results in a JOptionPane
+            JOptionPane.showMessageDialog(Tree.this, scrollPane, "Prim Results", JOptionPane.PLAIN_MESSAGE);
+        }
+    };
+    private class KruskalAlgo implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            GraphMatrix gmt = new GraphMatrix(countOfVertex);
+            for (Edge item : edgelst) {
+                gmt.addEdges(item);
+            }
+            System.out.println("Kruskal Algo button 's clicked");
+            List<Edge> mstEdgesKrus = Kruskal.findMST(gmt);
+            StringBuilder resultBuilder = new StringBuilder("MST Edges (Kruskal's Algorithm):\n");
+            System.out.println("MST Edges Kruskal's Algorithm:");
+            for (Edge edge : mstEdgesKrus) {
+                System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight:"
+                        + edge.getWeight());
+            }
+
+            for (Edge edge : mstEdgesKrus) {
+                resultBuilder.append(edge.getName())
+                        .append(": Src-")
+                        .append(edge.getSrc())
+                        .append(", Dst-")
+                        .append(edge.getDst())
+                        .append(", Weight:")
+                        .append(edge.getWeight())
+                        .append("\n");
+            }
+
+            // Create the scrollable area for the results
+            JTextArea textArea = new JTextArea(resultBuilder.toString());
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setPreferredSize(new Dimension(350, 200));
+
+            // Show the results in a JOptionPane
+            JOptionPane.showMessageDialog(Tree.this, scrollPane, "Kruskal Results", JOptionPane.PLAIN_MESSAGE);
+        }
+    };
 }

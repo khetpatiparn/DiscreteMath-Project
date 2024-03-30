@@ -5,10 +5,11 @@ class DisjointSet {
     private int[] rank; // For optimization
 
     public DisjointSet(int n) {
-        parent = new int[n];
-        rank = new int[n];
-        for (int i = 0; i < n; i++) {
+        parent = new int[n + 1];
+        rank = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
             parent[i] = i; // Initially, each vertex is its own parent
+            rank[i] = 0;
         }
     }
 

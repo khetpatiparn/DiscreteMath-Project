@@ -2,7 +2,6 @@ package Graph;
 import java.util.List;
 import java.util.ArrayList;
 
-
 public class Dijkstra {
     public int nVer;
     public int[][] graph;
@@ -47,7 +46,6 @@ public class Dijkstra {
         // Distance from source to itself is 0
         distance[source] = 0;
         paths.get(source).add(source);
-
         // Dijkstra's algorithm
         for (int count = 0; count < nVer - 1; count++) {
             int u = minDistance(distance, visited);
@@ -67,9 +65,9 @@ public class Dijkstra {
         // Print all paths
         for (int i = 0; i < nVer; i++) {
             if (i != source) {
-                System.out.print("Path from v" + source + " to v" + i + ": ");
+                System.out.print("Path from v" + (source + 1) + " to v" + (i + 1) + " : "); // Adjust vertex numbering
                 for (int node : paths.get(i)) {
-                    System.out.print("v"+node + " ");
+                    System.out.print("v" + (node + 1) + " "); // Adjust vertex numbering
                 }
                 System.out.println(", Distance: " + distance[i]);
             }
@@ -87,25 +85,5 @@ public class Dijkstra {
             }
         }
         return minIndex;
-    }
-
-    public static void main(String[] args) {
-        int V = 9;
-        int[][] graph = {
-            {0, 4, 0, 0, 0, 0, 0, 8, 0},
-            {4, 0, 8, 0, 0, 0, 0, 11, 0},
-            {0, 8, 0, 7, 0, 4, 0, 0, 2},
-            {0, 0, 7, 0, 9, 14, 0, 0, 0},
-            {0, 0, 0, 9, 0, 10, 0, 0, 0},
-            {0, 0, 4, 14, 10, 0, 2, 0, 0},
-            {0, 0, 0, 0, 0, 2, 0, 1, 6},
-            {8, 11, 0, 0, 0, 0, 1, 0, 7},
-            {0, 0, 2, 0, 0, 0, 6, 7, 0}
-        };
-
-        int source = 0;
-
-        Dijkstra dijkstra = new Dijkstra(V, graph, source);
-        dijkstra.dijkstra();
     }
 }
