@@ -1,4 +1,5 @@
 package Graph;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -6,6 +7,8 @@ public class Dijkstra {
     public int nVer;
     public int[][] graph;
     public int source;
+    public int[] distance;
+
 
     public Dijkstra(int V, int graph[][], int src) {
         this.nVer = V;
@@ -33,7 +36,7 @@ public class Dijkstra {
         }
 
         boolean[] visited = new boolean[nVer];
-        int[] distance = new int[nVer];
+        distance = new int[nVer];
         List<List<Integer>> paths = new ArrayList<>();
 
         // Initialize distances and paths
@@ -46,7 +49,6 @@ public class Dijkstra {
         // Distance from source to itself is 0
         distance[source] = 0;
         paths.get(source).add(source);
-
         // Dijkstra's algorithm
         for (int count = 0; count < nVer - 1; count++) {
             int u = minDistance(distance, visited);
@@ -86,5 +88,9 @@ public class Dijkstra {
             }
         }
         return minIndex;
+    }
+
+    public int getDistance(int i) {
+        return distance[i];
     }
 }
