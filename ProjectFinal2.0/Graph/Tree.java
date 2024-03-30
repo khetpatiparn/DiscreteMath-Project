@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class Tree extends JPanel {
     private final int FRAME_WIDTH = 800;
@@ -38,19 +40,17 @@ public class Tree extends JPanel {
     List<Edge> edgelst;
     int countOfVertex;
 
-    
     List<VertexPos> verticesPositionList = new ArrayList<>();
     List<EdgePos> egdesPositionList = new ArrayList<>();
 
     public Tree(GraphSetupScreen graphSetup) {
         this.graphSetup = graphSetup;
 
-
         setPreferredSize(FRAME_SIZE);
         setLayout(null);
         setBackground(Color.WHITE);
 
-        // Select Algo Label 
+        // Select Algo Label
         selectAlgoLabel = new JLabel("Select Algorithm");
         selectAlgoLabel.setBounds(555, 50, 590, 60);
         selectAlgoLabel.setOpaque(false);
@@ -82,20 +82,56 @@ public class Tree extends JPanel {
         changeGraphButton.addActionListener(e -> repaint());
         addMouseMotionListener(new MousePositionCheck());
 
-        PrimButton.addActionListener(new PrimAlgo());
+        PrimButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GraphMatrix gmt = new GraphMatrix(countOfVertex);
+                for (Edge item : edgelst) {
+                    gmt.addEdges(item);
+                }
+                Prim prims = new Prim(gmt);
+
+                List<Edge> mstEdgesprim = prims.findMST();
+                StringBuilder resultBuilder = new StringBuilder("MST Edges (Kruskal's Algorithm):\n");
+                System.out.println("MST Edges Prim's algorithms:");
+            for (Edge edge : mstEdgesprim) {
+                System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight:"
+                        + edge.getWeight());
+            }
+
+                for (Edge edge : mstEdgesprim) {
+                    resultBuilder.append(edge.getName())
+                            .append(": Src-")
+                            .append(edge.getSrc())
+                            .append(", Dst-")
+                            .append(edge.getDst())
+                            .append(", Weight:")
+                            .append(edge.getWeight())
+                            .append("\n");
+                }
+
+                // Create the scrollable area for the results
+                JTextArea textArea = new JTextArea(resultBuilder.toString());
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                scrollPane.setPreferredSize(new Dimension(350, 200));
+
+                // Show the results in a JOptionPane
+                JOptionPane.showMessageDialog(Tree.this, scrollPane, "Kruskal's Results", JOptionPane.PLAIN_MESSAGE);
+            }
+        });
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON); // for smoothly 
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // for smoothly
         drawSidebar(g);
         // Draw random Vertex
         Font largerFont = new Font("Arial", Font.BOLD, 14);
         g.setFont(largerFont);
         g.setColor(Color.BLACK);
-        
+
         int minX = 50;
         int minY = 50;
         int maxX = getWidth() - 300;
@@ -109,7 +145,6 @@ public class Tree extends JPanel {
 
         // Find the minimum vertex index
         int minVertexIndex = Integer.MAX_VALUE;
-
 
         for (Edge edge : graphSetup.getEdgeList()) {
             minVertexIndex = Math.min(minVertexIndex, Math.min(edge.getSrc(), edge.getDst()));
@@ -126,10 +161,11 @@ public class Tree extends JPanel {
             drawnPointY[i] = randomY;
 
             g.fillOval(randomX, randomY, pointSize, pointSize);
-            
+
             String label = "v" + (i + minVertexIndex); // Adjust the label to start from v1
             g.drawString(label, randomX + pointSize, randomY);
-            // System.out.println((i + 1) + " X : "+ drawnPointX[i] + " , Y : " + drawnPointY[i]);
+            // System.out.println((i + 1) + " X : "+ drawnPointX[i] + " , Y : " +
+            // drawnPointY[i]);
             verticesPositionList.add(new VertexPos(randomX, randomY));
         }
         System.out.println(verticesPositionList);
@@ -139,7 +175,8 @@ public class Tree extends JPanel {
         edgelst = graphSetup.getEdgeList(); // Store the connections between points
 
         for (Edge edge : edgelst) {
-            int startX = drawnPointX[edge.getSrc() - minVertexIndex] + pointSize / 2; // Adjust the index to start from 0
+            int startX = drawnPointX[edge.getSrc() - minVertexIndex] + pointSize / 2; // Adjust the index to start from
+                                                                                      // 0
             int startY = drawnPointY[edge.getSrc() - minVertexIndex] + pointSize / 2;
             int endX = drawnPointX[edge.getDst() - minVertexIndex] + pointSize / 2;
             int endY = drawnPointY[edge.getDst() - minVertexIndex] + pointSize / 2;
@@ -154,6 +191,7 @@ public class Tree extends JPanel {
         }
         System.out.println(egdesPositionList);
     }
+
     // Function to prevent points from being too close
     private boolean isTooClose(int x, int y, int[] drawnX, int[] drawnY, int numDrawn) {
         for (int i = 0; i < numDrawn; i++) {
@@ -169,37 +207,21 @@ public class Tree extends JPanel {
         int mainRectWidth = 250;
         int mainRectHeight = 600;
         int mainRectX = getWidth() - mainRectWidth;
-        int mainRectY = 0; // fix 
-    
+        int mainRectY = 0; // fix
+
         g.setColor(Color.RED);
         g.fillRect(mainRectX, mainRectY, mainRectWidth, mainRectHeight);
     }
 
     // Inner Class for Event Handler Section
-    private class MousePositionCheck extends MouseAdapter{
+    private class MousePositionCheck extends MouseAdapter {
         @Override
         public void mouseMoved(MouseEvent e) {
-        // Check mouse's position
-        // System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
+            // Check mouse's position
+            // System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
         }
     }
 
-    private class PrimAlgo implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Prim Algo button 's clicked");
-            // Prim prims = new Prim(graphSetup.graphMatrix);
-            GraphMatrix gmt = new GraphMatrix(countOfVertex);
-            for (Edge item : edgelst){
-                gmt.addEdges(item);
-            }
-            Prim prims = new Prim(gmt); 
-            
-            List<Edge> mstEdgesprim = prims.findMST(); 
-            System.out.println("MST Edges Prim's algorithms:");
-            for (Edge edge : mstEdgesprim) {
-                System.out.println(edge.getName() + ": Src-" + edge.getSrc() + ", Dst-" + edge.getDst() + ", Weight-" + edge.getWeight());
-            }
-        }
-    } 
+    
+
 }
