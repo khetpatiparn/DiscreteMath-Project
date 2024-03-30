@@ -3,7 +3,9 @@ import javax.swing.JOptionPane;
 import FSA.*;
 import Graph.*;
 
-import FSA.FSA;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +20,10 @@ public class StartFrame extends JFrame{
     Tree tree;
     FSA fsa;
     GraphSetupScreen graphSetupScreen;
-    
+
+    // add
+    GraphMatrix graphMatrix;
+    //
     Container cp;
     
     public StartFrame() {
@@ -26,8 +31,7 @@ public class StartFrame extends JFrame{
         // Add the Screen
         titleScreen = new TitleScreen();
         creditscreen = new Creditscreen();
-        graphSetupScreen = new GraphSetupScreen();
-    
+        graphSetupScreen = new GraphSetupScreen(graphMatrix);
         tree = new Tree(graphSetupScreen);
         
         fsa = new FSA();
@@ -112,7 +116,7 @@ public class StartFrame extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("Back button's clicked");
-            graphSetupScreen.clearButton.addActionListener(new GraphSetupScreen().new clearAction());
+            graphSetupScreen.clearButton.addActionListener(new GraphSetupScreen(graphMatrix).new clearAction());
             System.out.println(graphSetupScreen.getEdgeList());
             cp.remove(graphSetupScreen);
             cp.add(titleScreen);
@@ -173,6 +177,5 @@ public class StartFrame extends JFrame{
         }
     }
 }
-
 
 

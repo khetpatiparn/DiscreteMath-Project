@@ -2,6 +2,7 @@ package Graph;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GraphMatrix{
     // build adjacency matrix
     private List<String> vertices = new ArrayList<>();
@@ -33,7 +34,7 @@ public class GraphMatrix{
         // System.out.println(vertices);
     }
     public GraphMatrix(int countV){
-        matrix = new int[countV][countV];
+        matrix = new int[countV][countV]; //int[5][5] => 0 1 2 3 4
         showWeight = new int[countV][countV];
         vertices = listVertices(countV); 
         setUp();
@@ -42,7 +43,7 @@ public class GraphMatrix{
 
     // build vertex
     public List<String> listVertices(int countVertices){
-        for (int i = 0; i < countVertices; i++){
+        for (int i = 1; i <= countVertices; i++){
             String ver = "v" + i;
             vertices.add(ver);
         }
@@ -51,7 +52,7 @@ public class GraphMatrix{
 
     public boolean isConnected(){
         boolean[] visited = new boolean[vertices.size()]; // Track visited vertices
-        dfs(0, visited);  // Start a Depth-First Search from vertex 0
+        dfs(1, visited);  // Start a Depth-First Search from vertex 0
     
         // Check if all vertices have been visited
         for (boolean isVisited : visited) {
@@ -81,11 +82,11 @@ public class GraphMatrix{
         edges.add(e);
         System.out.println("---Add Edges: from V" + e.getSrc() + " to V" + e.getDst() + "---");
         if (e.getSrc() == e.getDst()){
-            matrix[e.getSrc()][e.getDst()] += 1;
+            matrix[e.getSrc() - 1][e.getDst() - 1] += 1;
         }
         else{
-            matrix[e.getSrc()][e.getDst()] += 1;
-            matrix[e.getDst()][e.getSrc()] += 1;
+            matrix[e.getSrc() - 1][e.getDst() - 1] += 1;
+            matrix[e.getDst() - 1][e.getSrc() - 1] += 1;
         }
         Draw(matrix);
         addWeight(e);
@@ -93,8 +94,8 @@ public class GraphMatrix{
 
     public void addWeight(Edge e){
         System.out.println("---Update Weight---");
-        showWeight[e.getSrc()][e.getDst()] += e.getWeight();
-        showWeight[e.getDst()][e.getSrc()] += e.getWeight();
+        showWeight[e.getSrc() - 1][e.getDst() - 1] += e.getWeight();
+        showWeight[e.getDst() - 1][e.getSrc() - 1] += e.getWeight();
 
         Draw(showWeight);
     }
