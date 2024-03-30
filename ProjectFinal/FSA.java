@@ -87,17 +87,23 @@ public class FSA extends JPanel {
         submitButton = new JButton("Submit");
         submitButton.setBounds(labelXaxis, labelYaxis + 190, 95, 30);
         submitButton.addActionListener(new ActionListener() {
+            //algo
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Input to check
                 String inputText = textField.getText();
                 System.out.println(inputText);
+
+                // Get the selected item from the JComboBox
+                Integer startState = (int) comboBox.getSelectedItem();
+                //System.out.println("Selected Start State: " + startState);
+
                 // Process the input text here
-                if (inputText.equals("1")) {
+                new FiniteMain(inputText, startState);
+                if (FiniteMain.isAccepted == true) {
                     outputLabel.setText("Output: Accept");
-                } else if (inputText.equals("0")) {
-                    outputLabel.setText("Output: Reject");
                 } else {
-                    outputLabel.setText("Output: Invalid ");
+                    outputLabel.setText("Output: Reject");
                 }
             }
         });
