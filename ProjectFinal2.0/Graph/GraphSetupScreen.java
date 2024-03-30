@@ -1,4 +1,3 @@
-package Graph;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -47,9 +46,9 @@ public class GraphSetupScreen extends JPanel {
 
     // Button
     private JButton submitButton;
-    public JButton clearButton;
-    public JButton backButton;
-    public JButton finishButton;
+    protected JButton clearButton;
+    protected JButton backButton;
+    protected JButton finishButton;
 
     // TextPane & ScrollPane
     private JTextPane dataLabel;
@@ -304,7 +303,7 @@ public class GraphSetupScreen extends JPanel {
         }
     }
 
-    public class clearAction implements ActionListener {
+    protected class clearAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             inputVertexField.setText("");
