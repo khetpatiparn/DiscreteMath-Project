@@ -7,13 +7,20 @@ public class Dijkstra {
     public int nVer;
     public int[][] graph;
     public int source;
-    public int[] distance;
-
+    public int[]distance;
+    public List<Integer> distanceList = new ArrayList<>();
+    public static List<List<Integer>> paths;
 
     public Dijkstra(int V, int graph[][], int src) {
         this.nVer = V;
         this.graph = graph;
         this.source = src;
+
+        // Initialize paths list
+        paths = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            paths.add(new ArrayList<>());
+        }
     }
 
     public void dijkstra() {
@@ -72,7 +79,10 @@ public class Dijkstra {
                 for (int node : paths.get(i)) {
                     System.out.print("v" + (node + 1) + " "); // Adjust vertex numbering
                 }
-                System.out.println(", Distance: " + distance[i]);
+                System.out.println(",Distance: " + distance[i]);
+                distanceList.add(distance[i]);
+            }else{
+                distanceList.add(999);
             }
         }
     }
@@ -90,7 +100,18 @@ public class Dijkstra {
         return minIndex;
     }
 
-    public int getDistance(int i) {
-        return distance[i];
+
+
+    public List<Integer> getDistanceList() {
+        return distanceList;
+    }
+
+    public void setDistanceList(List<Integer> distanceList) {
+        this.distanceList = distanceList;
+    }
+
+    // Getter method for paths
+    public List<List<Integer>> getPaths() {
+        return paths;
     }
 }
