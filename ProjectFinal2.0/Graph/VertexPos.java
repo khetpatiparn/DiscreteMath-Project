@@ -1,3 +1,5 @@
+package Graph;
+
 public class VertexPos {
     private int positionX;
     private int positionY;

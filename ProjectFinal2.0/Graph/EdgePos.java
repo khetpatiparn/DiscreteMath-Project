@@ -1,3 +1,5 @@
+package Graph;
+
 public class EdgePos {
     private int startX;
     private int startY;

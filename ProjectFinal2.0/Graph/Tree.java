@@ -1,3 +1,5 @@
+package Graph;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -23,7 +25,8 @@ public class Tree extends JPanel {
     // Label
     JLabel selectAlgoLabel;
     // Button
-    JButton changeGraphButton, KruskalButton, PrimButton, DijkButton, backButton;
+    JButton changeGraphButton, KruskalButton, PrimButton, DijkButton;
+    public JButton backButton;
 
     // Set Button sizes and locations
     int buttonWidth = 200;
