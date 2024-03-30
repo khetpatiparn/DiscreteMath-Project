@@ -17,7 +17,7 @@ public class Tree extends JPanel {
     // Label
     JLabel selectAlgoLabel;
     // Button
-    JButton KruskalButton, PrimButton, DijkButton, backButton;
+    JButton changeGraphButton, KruskalButton, PrimButton, DijkButton, backButton;
 
     // Set Button sizes and locations
     int buttonWidth = 200;
@@ -45,49 +45,27 @@ public class Tree extends JPanel {
         add(selectAlgoLabel);
 
         // Create Buttons
+        changeGraphButton = new JButton("Regenerate Graph");
         KruskalButton = new JButton("Kruskal's algorithm");
         PrimButton = new JButton("Prim's algorithm");
         DijkButton = new JButton("Dijkstra's algorithm");
         backButton = new JButton("Back");
 
-        KruskalButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
-        PrimButton.setBounds(buttonX, buttonY + 100, buttonWidth, buttonHeight);
-        DijkButton.setBounds(buttonX, buttonY + 200, buttonWidth, buttonHeight);
-        backButton.setBounds(buttonX, buttonY + 300, buttonWidth, buttonHeight);
+        changeGraphButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+        KruskalButton.setBounds(buttonX, buttonY + 80, buttonWidth, buttonHeight);
+        PrimButton.setBounds(buttonX, buttonY + 160, buttonWidth, buttonHeight);
+        DijkButton.setBounds(buttonX, buttonY + 240, buttonWidth, buttonHeight);
+        backButton.setBounds(buttonX, buttonY + 320, buttonWidth, buttonHeight);
 
         // Add Buttons to display
+        add(changeGraphButton);
         add(KruskalButton);
         add(PrimButton);
         add(DijkButton);
         add(backButton);
 
-        // Implement Button Listeners (Placeholders for Algorithms)
-        KruskalButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implement Kruskal's Algorithm here
-                // Modify drawing in paintComponent as needed
-                repaint();
-            }
-        });
-
-        PrimButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-        //         // Implement Prim's Algorithm here
-        //         // Modify drawing in paintComponent as needed
-                repaint();
-            }
-        });
-
-        DijkButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-        //         // Implement Dijkstra's Algorithm here
-        //         // Modify drawing in paintComponent as needed
-        //         repaint();
-            }
-        });
+        // Event Handling Zone
+        changeGraphButton.addActionListener(e -> repaint());
     }
 
     @Override
@@ -95,9 +73,10 @@ public class Tree extends JPanel {
         super.paintComponent(g);
         drawSidebar(g);
         // Draw random Vertex
-        Font largerFont = new Font("Arial", Font.PLAIN, 16);
+        Font largerFont = new Font("Arial", Font.BOLD, 14);
         g.setFont(largerFont);
         g.setColor(Color.BLACK);
+        
         int minX = 50;
         int minY = 50;
         int maxX = getWidth() - 300;
