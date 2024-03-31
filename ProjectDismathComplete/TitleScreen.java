@@ -1,8 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -69,15 +67,6 @@ public class TitleScreen extends JPanel {
         lbCredit.setForeground(Color.BLACK);
         add(lbCredit);
 
-        addMouseMotionListener(new MousePositionCheck());
     }
     
-    // Inner Class for Event Handler Section
-    private class MousePositionCheck extends MouseAdapter{
-        @Override
-        public void mouseMoved(MouseEvent e) {
-        // Check mouse's position
-        // System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
-        }
-    }
 }
