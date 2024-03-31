@@ -2,11 +2,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import FSA.*;
 import Graph.*;
-
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,10 +15,7 @@ public class StartFrame extends JFrame{
     Tree tree;
     FSA fsa;
     GraphSetupScreen graphSetupScreen;
-
-    // add
     GraphMatrix graphMatrix;
-    //
     Container cp;
     
     public StartFrame() {
@@ -41,17 +33,16 @@ public class StartFrame extends JFrame{
         // cp.add(graphSetupScreen);
         // cp.add(matrix);
         // cp.add(tree);
-         //cp.add(fsa);
+        // cp.add(fsa);
 
         // Event-Handler Control 
         titleScreen.addMouseListener(new NavigationTitleScreen()); // Event TitleScreen
         creditscreen.CbackBtn.addActionListener(new NavBackCredits()); // Event Credit
+        
         // Event Graph Set up 
         graphSetupScreen.backButton.addActionListener(new NavBackGraphSetupScreen()); 
         graphSetupScreen.finishButton.addActionListener(new NavFinishSetup());
-
         tree.backButton.addActionListener(new NavBackTreeScreen()); // Event Tree Screen
-
         fsa.exitButton.addActionListener(new NavBackFSA()); // Event FSA SCreen
 
         //setup frame
@@ -98,6 +89,7 @@ public class StartFrame extends JFrame{
             }
         }
     }
+    
     // Inner Class Event for Credit Screen 
     private class NavBackCredits implements ActionListener{
         @Override
@@ -111,6 +103,7 @@ public class StartFrame extends JFrame{
             System.out.println("Title Screen's showing");
         }
     }
+    
     // Inner Class Event for Graph Setup Screen
     private class NavBackGraphSetupScreen implements ActionListener{
         @Override
@@ -126,6 +119,7 @@ public class StartFrame extends JFrame{
             System.out.println("Title Screen's showing");
         }
     }
+    
     // Inner Class Event for Graph Setup Screen
     private class NavFinishSetup implements ActionListener{
         @Override

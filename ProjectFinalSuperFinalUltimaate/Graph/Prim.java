@@ -29,8 +29,8 @@ public class Prim {
                     // Iterate through all adjacent vertices
                     for (int j = 0; j < graph.getVertices().size(); j++) {
                         // If the adjacent vertex is not visited and the weight is smaller than minWeight
-                        if (!visited[j] && graph.showWeight[i][j] > 0 && graph.showWeight[i][j] < minWeight) {
-                            minWeight = graph.showWeight[i][j];
+                        if (!visited[j] && GraphMatrix.showWeight[i][j] > 0 && GraphMatrix.showWeight[i][j] < minWeight) {
+                            minWeight = GraphMatrix.showWeight[i][j];
                             src = i;
                             dst = j;
                         }

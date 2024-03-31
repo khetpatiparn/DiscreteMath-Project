@@ -8,7 +8,7 @@ public class Dijkstra {
     public int[][] graph;
     public int source;
     public int[]distance;
-    public List<Integer> distanceList = new ArrayList<>();
+    public List<Integer> distanceList = new ArrayList<>(); // List to store distance
     public List<List<Integer>> paths = new ArrayList<>(); // List to store paths
 
     public Dijkstra(int V, int graph[][], int src) {
@@ -50,6 +50,7 @@ public class Dijkstra {
         // Distance from source to itself is 0
         distance[source] = 0;
         paths.get(source).add(source);
+        
         // Dijkstra's algorithm
         for (int count = 0; count < nVer - 1; count++) {
             int u = minDistance(distance, visited);

@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,12 +23,12 @@ public class FSA extends JPanel {
     JLabel Head;
     JLabel selectStartStateLabel;
     JLabel separatorLabel;
-    JLabel outputLabel; // Added outputLabel
-    JButton submitButton, clearButton; // Added exitButton
+    JLabel outputLabel; 
+    JButton submitButton, clearButton; 
     public JButton exitButton;
     JComboBox<Integer> comboBox;
     JTextField textField;
-    JPanel outputPanel; // Added JPanel for output
+    JPanel outputPanel; 
     private BufferedImage image;
 
     public FSA() {
@@ -89,7 +88,6 @@ public class FSA extends JPanel {
         submitButton = new JButton("Submit");
         submitButton.setBounds(labelXaxis, labelYaxis + 190, 95, 30);
         submitButton.addActionListener(new ActionListener() {
-            //algo
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Input to check
@@ -145,14 +143,14 @@ public class FSA extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Drawing code...
-        int mainRectWidth = 250; // กำหนดความกว้างของสี่เหลี่ยมหลัก
-        int mainRectHeight = 600; // กำหนดความสูงของสี่เหลี่ยมหลัก
-        int mainRectX = getWidth() - mainRectWidth; // คำนวณตำแหน่ง X ด้านขวาของ JPanel
-        int mainRectY = (getHeight() - mainRectHeight) / 2; // คำนวณตำแหน่ง Y ให้สี่เหลี่ยมอยู่ตรงกลางของ JPanel
-        g.setColor(Color.RED); // เปลี่ยนสีตามที่คุณต้องการ
-        g.fillRect(mainRectX, mainRectY, mainRectWidth, mainRectHeight); // วาดสี่เหลี่ยมหลัก
+        int mainRectWidth = 250; 
+        int mainRectHeight = 600; 
+        int mainRectX = getWidth() - mainRectWidth; 
+        int mainRectY = (getHeight() - mainRectHeight) / 2; 
+        g.setColor(Color.RED); 
+        g.fillRect(mainRectX, mainRectY, mainRectWidth, mainRectHeight); // draw rightRectangle
 
-        // Draw image (adjust position and size as needed)
+        // Draw image 
         if (image != null) {
             ((Graphics2D) g).drawImage(image, 60, 190, 400, 150, null); // Adjust X, Y, width, and height
         }

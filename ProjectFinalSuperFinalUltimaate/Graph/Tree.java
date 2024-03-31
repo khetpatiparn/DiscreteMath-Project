@@ -9,9 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -44,9 +41,6 @@ public class Tree extends JPanel {
     GraphSetupScreen graphSetup;
     List<Edge> edgelst;
     int countOfVertex;
-
-    List<VertexPos> verticesPositionList = new ArrayList<>();
-    List<EdgePos> egdesPositionList = new ArrayList<>();
 
     public Tree(GraphSetupScreen graphSetup) {
         this.graphSetup = graphSetup;
@@ -85,69 +79,18 @@ public class Tree extends JPanel {
 
         // Event Handling Zone
         changeGraphButton.addActionListener(e -> repaint());
-        addMouseMotionListener(new MousePositionCheck());
-
         PrimButton.addActionListener(new PrimButton());
         KruskalButton.addActionListener(new KruskalAlgo());
         DijkButton.addActionListener(new inputSrcAction());
-
-        backButton.addActionListener(new ActionListener() {
-
-            @Override
-
-            public void actionPerformed(ActionEvent e) {
-
-                // Remove the JComboBox and input box from the panel
-
-                for (Component component : getComponents()) {
-
-                    if (component instanceof JComboBox || component instanceof JTextField) {
-
-                        remove(component);
-
-                    }
-
-                }
-
-    
-
-                // Move the selectAlgoLabel and buttons back to their original position
-
-                selectAlgoLabel.setBounds(555, 50, 590, 60);
-
-                changeGraphButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
-
-                KruskalButton.setBounds(buttonX, buttonY + 80, buttonWidth, buttonHeight);
-
-                PrimButton.setBounds(buttonX, buttonY + 160, buttonWidth, buttonHeight);
-
-                DijkButton.setBounds(buttonX, buttonY + 240, buttonWidth, buttonHeight);
-
-                backButton.setBounds(buttonX, buttonY + 320, buttonWidth, buttonHeight);
-
-    
-
-                // Repaint the panel to reflect the changes
-
-                repaint();
-
-            }
-
-        });
-
+        backButton.addActionListener(new BackButtonActionListener());
     }
-
-
-
-   
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // for smoothly
         drawSidebar(g);
-        // Draw random Vertex
+        // Draw Vertex random position 
         Font largerFont = new Font("Arial", Font.BOLD, 14);
         g.setFont(largerFont);
         g.setColor(Color.BLACK);
@@ -184,11 +127,9 @@ public class Tree extends JPanel {
 
             String label = "v" + (i + minVertexIndex); // Adjust the label to start from v1
             g.drawString(label, randomX + pointSize, randomY);
-            // System.out.println((i + 1) + " X : "+ drawnPointX[i] + " , Y : " +
-            // drawnPointY[i]);
-            verticesPositionList.add(new VertexPos(randomX, randomY));
+        
         }
-        //System.out.println(verticesPositionList);
+    
 
         // Draw Edge-endpoint
         g.setColor(Color.BLUE);
@@ -196,20 +137,18 @@ public class Tree extends JPanel {
 
         for (Edge edge : edgelst) {
             int startX = drawnPointX[edge.getSrc() - minVertexIndex] + pointSize / 2; // Adjust the index to start from
-                                                                                      // 0
             int startY = drawnPointY[edge.getSrc() - minVertexIndex] + pointSize / 2;
             int endX = drawnPointX[edge.getDst() - minVertexIndex] + pointSize / 2;
             int endY = drawnPointY[edge.getDst() - minVertexIndex] + pointSize / 2;
             g.drawLine(startX, startY, endX, endY);
-            //egdesPositionList.add(new EdgePos(startX, startY, endX, endY));
-
+        
             // Define label in Graph
             int labelX = (startX + endX) / 2;
             int labelY = (startY + endY) / 2 - 10;
             g.drawString(edge.getWeight() + "", labelX, labelY);
-            // System.out.println(edge.getWeight());
+       
         }
-        //System.out.println(egdesPositionList);
+
     }
 
     // Function to prevent points from being too close
@@ -233,15 +172,7 @@ public class Tree extends JPanel {
         g.fillRect(mainRectX, mainRectY, mainRectWidth, mainRectHeight);
     }
 
-    // Inner Class for Event Handler Section
-    private class MousePositionCheck extends MouseAdapter {
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            // Check mouse's position
-            // System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
-        }
-    }
-
+    // Inner Class Event for PrimButton
     private class PrimButton implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -281,6 +212,7 @@ public class Tree extends JPanel {
         }
     };
 
+    // Inner Class Event for KruskalButton
     private class KruskalAlgo implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -318,68 +250,34 @@ public class Tree extends JPanel {
             JOptionPane.showMessageDialog(Tree.this, scrollPane, "Kruskal Results", JOptionPane.PLAIN_MESSAGE);
         }
     };
-     //Input source for Dijkstra
-
-     public class inputSrcAction implements ActionListener {
-
+    
+    // Inner Class Event for DijkButton
+     private class inputSrcAction implements ActionListener {
         @Override
-
         public void actionPerformed(ActionEvent e) {
-
             // Move the existing buttons and labels up
-
             selectAlgoLabel.setBounds(555, 15, 590, 60);
-
             changeGraphButton.setBounds(buttonX, buttonY - 50, buttonWidth, buttonHeight);
-
             KruskalButton.setBounds(buttonX, buttonY + 30, buttonWidth, buttonHeight);
-
             PrimButton.setBounds(buttonX, buttonY + 110, buttonWidth, buttonHeight);
-
             DijkButton.setBounds(buttonX, buttonY + 190, buttonWidth, buttonHeight);
-
             backButton.setBounds(buttonX, buttonY + 320, buttonWidth, buttonHeight);
-
-
-
             // Vertex selection in JComboBox
-
             String vertexCnt = GraphSetupScreen.inputVertexField.getText();
-
             int ver = Integer.parseInt(vertexCnt);
-
             String[] vertices = new String[ver + 1]; // Add one for the default option
-
             vertices[0] = "--- source vertex ---"; // Default option
-
             for (int i = 1; i <= ver; i++) {
-
                 vertices[i] = "v" + i;
-
             }
-
-
-
             // Create JComboBox for source input
-
             JComboBox<String> vertexComboBox = new JComboBox<>(vertices);
-
             vertexComboBox.setBounds(buttonX, buttonY + 270, buttonWidth, buttonHeight-20);
-
             add(vertexComboBox);
-
-
-
             // Assuming you have a JLabel for instructions
-
             JLabel instructionLabel = new JLabel("Enter source vertex:");
-
             instructionLabel.setBounds(buttonX, buttonY + 230, buttonWidth, buttonHeight);
-
             add(instructionLabel);
-
-
-
            // Add item listener to the JComboBox
            vertexComboBox.addItemListener(new ItemListener() {
             @Override
@@ -391,7 +289,7 @@ public class Tree extends JPanel {
                         for (Edge item : edgelst) {
                             gmt.addEdges(item);
                         }
-                        Dijkstra djk = new Dijkstra(countOfVertex, gmt.showWeight, selectedIndex);
+                        Dijkstra djk = new Dijkstra(countOfVertex, GraphMatrix.showWeight, selectedIndex);
                         djk.dijkstra();
 
                         StringBuilder outputMessage = new StringBuilder();
@@ -403,16 +301,35 @@ public class Tree extends JPanel {
                                 outputMessage.append(paths.get(i)).append("\n"); // Append formatted path
                             }
                         }
-
                         // Show the results in a JOptionPane
                         JOptionPane.showMessageDialog(Tree.this, outputMessage.toString(),
                                 "Dijkstra's Algorithm Results", JOptionPane.PLAIN_MESSAGE);
                     }
-
                 }
             }
         });
-
+        }
+    }
+    
+    // Inner Class Event for BackButton
+    private class BackButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Remove the JComboBox and input box from the panel
+            for (Component component : getComponents()) {
+                if (component instanceof JComboBox || component instanceof JTextField) {
+                    remove(component);
+                }
+            }
+            // Move the selectAlgoLabel and buttons back to their original position
+            selectAlgoLabel.setBounds(555, 50, 590, 60);
+            changeGraphButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+            KruskalButton.setBounds(buttonX, buttonY + 80, buttonWidth, buttonHeight);
+            PrimButton.setBounds(buttonX, buttonY + 160, buttonWidth, buttonHeight);
+            DijkButton.setBounds(buttonX, buttonY + 240, buttonWidth, buttonHeight);
+            backButton.setBounds(buttonX, buttonY + 320, buttonWidth, buttonHeight);
+            // Repaint the panel to reflect the changes
+            repaint();
         }
     }
 }

@@ -39,15 +39,15 @@ public class Creditscreen extends JPanel {
         name2.setFont(new Font("Arial", Font.PLAIN, 20));
         add(name2);
 
-        name3 = new JLabel();
+        name3 = new JLabel(); 
         name3.setText("66050301  PICHSINEE JIRAWATTANAKASEM");
         name3.setBounds(223, 250, 490, 80);
         name3.setForeground(Color.black);
         name3.setFont(new Font("Arial", Font.PLAIN, 20));
         add(name3);
 
-        // BackButton ใช้ JButton แทน JLabel
-        CbackBtn = new JButton(); // สร้าง JButton
+        // BackButton Button
+        CbackBtn = new JButton(); 
         CbackBtn.setText("BACK");
         CbackBtn.setBounds(320, 370, 150, 50);
         CbackBtn.setOpaque(true);

@@ -26,7 +26,7 @@ public class TitleScreen extends JPanel {
 
         // Project-Discretemath Label
         lbprojectName = new JLabel();
-        lbprojectName.setText("Project-Discretemath");
+        lbprojectName.setText("Discretemath-Project");
         lbprojectName.setBounds(120, 50, 590, 60);
         lbprojectName.setOpaque(false);
         lbprojectName.setFont(new Font("Arial", Font.PLAIN, 60));
@@ -71,6 +71,7 @@ public class TitleScreen extends JPanel {
 
         addMouseMotionListener(new MousePositionCheck());
     }
+    
     // Inner Class for Event Handler Section
     private class MousePositionCheck extends MouseAdapter{
         @Override

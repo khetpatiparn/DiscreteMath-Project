@@ -8,7 +8,7 @@ public class GraphMatrix{
     private List<String> vertices = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
     int[][] matrix;
-    
+    static int[][] showWeight;
     public List<String> getVertices() {
         return vertices;
     }
@@ -21,11 +21,6 @@ public class GraphMatrix{
     public void setEdges(List<Edge> edges) {
         this.edges = edges;
     }
-
-    static int[][] showWeight;
-
-    
-
     public int[][] getMatrix() {
         return matrix;
     }
@@ -35,15 +30,12 @@ public class GraphMatrix{
     public int[][] getShowWeight() {
         return showWeight;
     }
-    public void setShowWeight(int[][] showWeight) {
-        this.showWeight = showWeight;
-    }
+    
     public GraphMatrix(int countV, int countE){
         matrix = new int[countV][countV]; // build size matrix
         showWeight = new int[countV][countV];
         vertices = listVertices(countV); 
         setUp();
-        // System.out.println(vertices);
     }
     public GraphMatrix(int countV){
         matrix = new int[countV][countV]; //int[5][5] => 0 1 2 3 4

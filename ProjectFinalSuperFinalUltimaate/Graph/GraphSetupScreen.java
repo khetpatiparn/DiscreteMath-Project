@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,18 +136,14 @@ public class GraphSetupScreen extends JPanel {
         dataLabel.setOpaque(false);
         dataLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         scrollPane = new JScrollPane(dataLabel);
-        scrollPane.setBounds(150, 250, 500, 200); // เปลี่ยนขนาดของ JLabel เพื่อรองรับข้อความทั้งหมด
+        scrollPane.setBounds(150, 250, 500, 200);
         // add(scrollPane);
 
         // Handler and Action
         inputVertexField.addActionListener(e -> createVertexChoices());
         submitButton.addActionListener(new submitAction());
-        
-        
         clearButton.addActionListener(new clearAction());
         backButton.addActionListener(new clearAction());
-
-        addMouseMotionListener(new MousePositionCheck());
 
          // Add document listener to inputWeightField
         inputWeightField.getDocument().addDocumentListener(new DocumentListener() {
@@ -169,28 +163,21 @@ public class GraphSetupScreen extends JPanel {
             }
         });
 
+        //finishButton event handler
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // สร้างอ็อบเจ็กต์ GraphMatrix
+                // create GraphMatrix object
                 GraphMatrix graphMatrix = new GraphMatrix(Integer.parseInt(inputVertexField.getText()), edgeList.size());
         
-                // ส่งข้อมูลจาก edgeList ไปยัง GraphMatrix เพื่อสร้าง adjacency matrix และ weight matrix
+                // sent edge from edgeList to GraphMatrix for create adjacency matrix and weight matrix
                 for (Edge edge : edgeList) {
                     graphMatrix.addEdges(edge.getName(), edge.getSrc(), edge.getDst(), edge.getWeight());
                 }
         
-                // ทำการตรวจสอบว่ากราฟเชื่อมกันหรือไม่
-                if (graphMatrix.isConnected()) {
-                    // แสดงข้อความหรือดำเนินการต่อตามที่ต้องการ
-                    System.out.println("Graph is connected.");
-                } else {
-                    // แสดงข้อความหรือดำเนินการต่อตามที่ต้องการ
-                    System.out.println("Graph is not connected.");
-                }
             }
         }); 
-    }// Constructor
+    }
     
     private void checkSubmitButtonState() {
         // Enable submit button if inputWeightField is not empty, otherwise disable it
@@ -199,7 +186,7 @@ public class GraphSetupScreen extends JPanel {
     
     private void createVertexChoices() {
         System.out.println("set input vertex");
-        String vertexCountText = inputVertexField.getText(); // 5
+        String vertexCountText = inputVertexField.getText(); 
         int vertexCount = 0;
         
         try {
@@ -228,6 +215,7 @@ public class GraphSetupScreen extends JPanel {
             remove(inputWeightField);
         }
         
+        //Combobox for select connect vertex
         fromVertexChoice = new JComboBox<>(choices);
         fromVertexChoice.setBounds(350, 150, 70, 30);
         add(fromVertexChoice);
@@ -256,7 +244,7 @@ public class GraphSetupScreen extends JPanel {
             String from = (String) fromVertexChoice.getSelectedItem();
             String to = (String) toVertexChoice.getSelectedItem();
             int weight = Integer.parseInt(inputWeightField.getText());
-
+            //Filter input from textfield
             if (from.equals(to)) {
                 JOptionPane.showMessageDialog(null, "From and to choices cannot be the same", "Invalid Input", JOptionPane.ERROR_MESSAGE);
                 System.out.println("From and to choices cannot be the same");
@@ -275,7 +263,7 @@ public class GraphSetupScreen extends JPanel {
                 }
             }
 
-            String edgeName = "e" + edgeCount; // สร้างชื่ออ็อบเจ็กต์ตามจำนวนอ็อบเจ็กต์ที่สร้างแล้ว
+            String edgeName = "e" + edgeCount; // create new edge object for each vertex input
             edgeList.add(new Edge(edgeName, Integer.parseInt(from), Integer.parseInt(to), weight));
 
             StringBuilder dataBuilder = new StringBuilder();
@@ -284,36 +272,30 @@ public class GraphSetupScreen extends JPanel {
                         .append(edge.getDst()).append(" weight ").append(edge.getWeight()).append("\n");
             }
 
-            // นำข้อความที่สร้างเข้าสู่ JLabel
+            // Label show
             dataLabel.setText(dataBuilder.toString());
-
             System.out.println("Submitted: " + from + " to " + to + ", Weight: " + weight);
 
-            edgeCount++; // เพิ่มจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
+            edgeCount++; 
             System.out.println(edgeList);
+            
+            //graph connect check for finish
             if(isConnected()){
                 finishButton.setEnabled(true);
             }
         }
     }
 
-    private class MousePositionCheck extends MouseAdapter{
-        @Override
-        public void mouseMoved(MouseEvent e) {
-        // Check mouse's position
-        // System.out.println("mouseX:" + e.getX() + ", mouseY:" + e.getY());
-        }
-    }
-
+    // Inner Class Event for clearButton
     public class clearAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             inputVertexField.setText("");
             inputVertexField.setEditable(true);
             inputWeightField.setText("");
-            edgeList.clear(); // ล้างรายการทั้งหมดใน edgeList
-            dataLabel.setText(""); // ล้างข้อความใน JLabel
-            edgeCount = 1; // รีเซ็ตจำนวนอ็อบเจ็กต์ที่สร้างขึ้น
+            edgeList.clear(); // claer edgeList
+            dataLabel.setText(""); // clear JLabel
+            edgeCount = 1; // reset edgecount
             finishButton.setEnabled(false);       
             System.out.println("Clear Edges List"); 
         }
@@ -331,12 +313,10 @@ public class GraphSetupScreen extends JPanel {
         return edgeList;
     }
 
+    // Check if all vertices from 1 to VertexCount exist in edgeList
     public boolean isConnected() {
-        int oldVertexCount = Integer.parseInt(inputVertexField.getText()); // ค่าเดิม
-        int newVertexCount = oldVertexCount; // ค่าใหม่เท่ากับค่าเดิม
-        
-        // Check if all vertices from 1 to newVertexCount exist in edgeList
-        for (int i = 1; i <= newVertexCount; i++) {
+        int VertexCount = Integer.parseInt(inputVertexField.getText()); 
+        for (int i = 1; i <= VertexCount; i++) {
             boolean found = false;
             for (Edge edge : edgeList) {
                 if (edge.getSrc() == i || edge.getDst() == i) {
